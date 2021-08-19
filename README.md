@@ -32,8 +32,9 @@ error, run the following line and try again:
 
     Sys.setenv(R_REMOTES_NO_ERRORS_FROM_WARNINGS = "true")
 
-`{r gh-installation, eval = FALSE} # install.packages('SwissASR', repos = 'https://ctu-bern.r-universe.dev') #`
-===============================================================================================================
+<!-- ```{r gh-installation, eval = FALSE} -->
+<!-- install.packages('SwissASR', repos = 'https://ctu-bern.r-universe.dev') -->
+<!-- ``` -->
 
 ### Using the package
 
