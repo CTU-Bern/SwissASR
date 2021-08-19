@@ -107,7 +107,7 @@
 #' @param var_devint variable containing whether the SAE is attributable to an intervention in the trial
 #' @param var_safetymeasure variable containing whether the SAE required safety related measures
 #'
-#' @return
+#' @return nothing in R, creates a docx file in the \code{target} location
 #' @export
 #' @import officer
 #' @import flextable

@@ -145,7 +145,7 @@ asr(
 \item{var_safetymeasure}{variable containing whether the SAE required safety related measures}
 }
 \value{
-
+nothing in R, creates a docx file in the \code{target} location
 }
 \description{
 Title
