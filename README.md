@@ -1,7 +1,7 @@
+
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-`SwissASR`
-==========
+# `SwissASR`
 
 Participant safety is a big issue in clinical trials and reporting
 safety related events to the authorities is mandatory for certain trial
@@ -15,32 +15,23 @@ ASR in MS Word format. This could then be forwarded to the PI for
 supplimental details, signing and submission to the relevant governing
 bodies.
 
-Example usage
--------------
+## Example usage
 
 ### Installing the package
 
-The package can be installed from
-[github](https://github.com/CTU-Bern/SwissASR) via the `remotes` package
+The package can be installed from CTU Bern’s package universe:
 
-    # install.packages("remotes")
-    remotes::install_github("CTU-Bern/SwissASR")
-
-Note that `remotes` treats any warnings (e.g. that a certain package was
-built under a different version of R) as errors. If you see such an
-error, run the following line and try again:
-
-    Sys.setenv(R_REMOTES_NO_ERRORS_FROM_WARNINGS = "true")
-
-<!-- ```{r gh-installation, eval = FALSE} -->
-<!-- install.packages('SwissASR', repos = 'https://ctu-bern.r-universe.dev') -->
-<!-- ``` -->
+``` r
+install.packages('SwissASR', repos = 'https://ctu-bern.r-universe.dev')
+```
 
 ### Using the package
 
 Load it as usual:
 
-    library(SwissASR)
+``` r
+library(SwissASR)
+```
 
 The main function is called `asr`. It has a lot of options, but these
 are mostly for generalizability. If your dataframe matches the default
@@ -51,31 +42,35 @@ used as follows for the IMP. This will create a file called `tmp.docx`
 in your working directory (the filename is controllable via the `target`
 option).
 
-    asr(sae_data)
+``` r
+asr(sae_data)
+```
 
 Default values are then used for most parameters, which is not ideal. It
 is more likely desirable to enter various additional information:
 
-    asr(data,
-        target = glue("asr_{sys.Date()}.docx"),
-        trial_title = "Example trial name", 
-        protocol_number = "1", 
-        basec_number = "sdfsgfdhgfdh", 
-        snctp_number = "sdfhehre", 
-        swissmedic_number = "ergtrjhzt", 
-        ec_name = "KEK Bern", 
-        product_name = "Example product", 
-        sponsor_contact = "Prof. Dr. Example", 
-        inst_name_address = "Example institute, Example street, Example City", 
-        n_centers_t = "N",         # total      - derive from database
-        n_centers_p = "N",         # planned    - from protocol
-        n_centers_c = "N",         # closed     - derive from database
-        n_centers_o = "N",         # open       - derive from database
-        n_pat_t = "default",       # target     - from protocol
-        n_pat_e = "default (300)", # enrolled   - derive from database
-        n_pat_c = "default",       # complete   - derive from database
-        n_pat_p = "default"        # prematurely terminated - derive from database
-    )
+``` r
+asr(data,
+    target = glue("asr_{sys.Date()}.docx"),
+    trial_title = "Example trial name", 
+    protocol_number = "1", 
+    basec_number = "sdfsgfdhgfdh", 
+    snctp_number = "sdfhehre", 
+    swissmedic_number = "ergtrjhzt", 
+    ec_name = "KEK Bern", 
+    product_name = "Example product", 
+    sponsor_contact = "Prof. Dr. Example", 
+    inst_name_address = "Example institute, Example street, Example City", 
+    n_centers_t = "N",         # total      - derive from database
+    n_centers_p = "N",         # planned    - from protocol
+    n_centers_c = "N",         # closed     - derive from database
+    n_centers_o = "N",         # open       - derive from database
+    n_pat_t = "default",       # target     - from protocol
+    n_pat_e = "default (300)", # enrolled   - derive from database
+    n_pat_c = "default",       # complete   - derive from database
+    n_pat_p = "default"        # prematurely terminated - derive from database
+)
+```
 
 It is envisaged that a script be written relatively early in the trial
 (before the first ASR is due) with the relevant fixed data (everything
