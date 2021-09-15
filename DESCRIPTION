@@ -2,7 +2,7 @@ Package: SwissASR
 Title: Automated Completion of the SwissEthics Annual Safety Report
 Version: 0.1.0
 Authors@R: 
-    person(given = "Alan",
+    person(given = "Alan G.",
            family = "Haynes",
            role = c("aut", "cre"),
            email = "alan.haynes@ctu.unibe.ch",
