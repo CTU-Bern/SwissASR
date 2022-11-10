@@ -59,7 +59,11 @@
 
 
 
-#' Title
+#' Fill the Annual Safety Report template
+#'
+#' This function fills out the SwissEthics annual safety report template with a
+#' much as possible. Minor changes will still be required after generation of the
+#' report.
 #'
 #' @param data dataframe containing safety data
 #' @param target filename to save the report to
@@ -117,52 +121,58 @@
 #' @importFrom stringr str_to_lower str_to_sentence
 #' @examples
 #'
-#'
-#' # # demo data
-#' # last_report <- as.Date("2020-11-01")
-#' # n <- 20
-#'
-#' # msample <- function(x, ...) sample(x, n, TRUE, ...)
-#' # sae_data <- data.frame(sae_date = last_report + msample(-20:20),
-#' #      record_id = msample(1:300),
-#' #      age = round(runif(n, 45, 75)),
-#' #      sex = factor(msample(c(c("M", "F")))),
-#' #      country = factor(msample("CH")),
-#' #      site = factor(msample(letters[1:15])),
-#' #      sae = factor(msample(c("headache", "diarhea",
-#' #      "spontaneous unconsciousness", "death", "poor sleep"))),
-#' #      intervention = factor(msample(c("grp1", "grp2"))),
-#' #      outcome = factor(msample(c("resolved", "fatal", "improved",
-#' #      "sequel", "unknown"))),
-#' #      comment = msample(c("", "fribble", "foo", "bar", "foobar")),
-#' #      trt = msample(c("", "trt1", "trt2", "trt3", "trt4")),
-#' #      class = msample(c("SAE", "SUSAR", "SADR")),
-#' #      expected = msample(c(TRUE, FALSE)),
-#' #      devdef = msample(c(TRUE, FALSE)),
-#' #      devattr = msample(c(TRUE, FALSE)),
-#' #      devdef = msample(c(TRUE, FALSE)),
-#' #      devint = msample(c(TRUE, FALSE)),
-#' #      safetymeasure = msample(c(TRUE, FALSE))
-#' # )
-#' # sae_data <- sae_data[order(sae_data$sae_date), ]
-#' # sae_data$sae_n <- 1:nrow(sae_data)
-#' # sae_data$sae_trtstop <- as.Date(ifelse(sae_data$outcome %in% c("resolved", "fatal") &
-#' #    sae_data$trt != "", sae_data$sae_date + runif(2:10, 1), NA), origin = "1970-01-01")
-#' # sae_data$sae_trtstart <- as.Date(ifelse(sae_data$trt != "", sae_data$sae_date + 1, NA),
-#' #    origin = "1970-01-01")
-#' # sae_data$related <- rbinom(n, 1, .25)
-#'
-#' # sae_data$sae_date
-#' # # data <- sae_data
-#'
-#' # asr(sae_data) # using defaults
-#' # # asr(sae_data, trial_type = "med")
-#'
 #' data(asr_sae)
 #' file <- tempfile("asr", fileext = ".docx")
 #' asr(asr_sae, file)
 #'
-#'
+#' # # more usual use will require passing more information:
+#' # asr(asr_sae, file,
+#' #     # trial info
+#' #     trial_title = "Example Trial Name",
+#' #     protocol_number = "20221002130",
+#' #     basec_number = "",
+#' #     snctp_number = "202200458",
+#' #     swissmedic_number = "....",
+#' #     ec_name = "Kantonale Ethikskommision Bern",
+#' #     product_name = "Drug name",
+#' #     international = FALSE,
+#' #     trial_type = "imp",
+#' #     # Sponsor info
+#' #     sponsor_contact = "Sponsor name, Sponsor phone number, Sponsor email",
+#' #     inst_name_address = "Institute name, Institute address",
+#' #     # site info
+#' #     n_centers_t = 20,        # total number
+#' #     n_centers_p = "default", # planned
+#' #     n_centers_c = "default", # closed
+#' #     n_centers_o = "default", # open
+#' #     # participant info
+#' #     n_pat_t = 1000,          # target
+#' #     n_pat_e = 300,           # enrolled
+#' #     n_pat_c = 0,             # complete
+#' #     n_pat_p = 0,             # prematurely terminated
+#' #     # report info
+#' #     report_date = format(Sys.Date(), format = "%d/%m/%Y"),
+#' #     period_from = as.Date("2020-11-02"),
+#' #     period_to = as.Date("2020-11-17"),
+#' #     # variable mapping
+#' #     var_class = "class",
+#' #     var_sae_n = "sae_n", #sae ID
+#' #     var_part_id = "record_id", #participant ID
+#' #     var_age = "age",
+#' #     var_sex ="sex",
+#' #     var_country = "country",
+#' #     var_site = "site",
+#' #     var_sae = "sae",
+#' #     var_date_onset = "sae_date",
+#' #     var_trt = "trt",
+#' #     var_date_trt_start = "sae_trtstart",
+#' #     var_date_trt_stop = "sae_trtstop",
+#' #     var_outcome = "outcome",
+#' #     var_comment = "comment",
+#' #     var_relation = "related",
+#' #     var_expected = "expected",
+#' #     var_safetymeasure = "safetymeasure"
+#' #     )
 #'
 #'
 #'

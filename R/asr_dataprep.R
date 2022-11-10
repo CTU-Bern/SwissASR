@@ -97,6 +97,10 @@
 #' @return a list of 2 dataframes (\code{data} containing all data submitted to
 #' the function and \code{period_data} which contains only the data for the relevant
 #' period) with variables renamed to those expected by \code{asr_safety_summary}
+#'
+#' @export
+#' @importFrom glue glue
+#' @importFrom stringr str_to_sentence
 #' @examples
 #' data(asr_sae)
 #' # IMP

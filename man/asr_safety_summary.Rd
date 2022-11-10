@@ -28,16 +28,18 @@ This function creates the text and summary table for the report.
 \examples{
 data(asr_sae)
 # IMP
-prepped <- asr_dataprep(asr_sae, period_from = as.Date("2020-10-10"), period_to = as.Date("2021-10-10"))
-asr_safety_summary(data = prepped$data, period_data = prepped$period_data, "imp", 60)
+prepped <- asr_dataprep(asr_sae,
+                        period_from = as.Date("2020-10-10"),
+                        period_to = as.Date("2021-10-10"))
+asr_safety_summary(data = prepped$data, period_data = prepped$period_data,
+                   "imp", 60)
+
 # medical devices
-prepped <- asr_dataprep(asr_sae, period_from = as.Date("2020-10-10"), period_to = as.Date("2021-10-10"), trial_type = "m")
-summ <- asr_safety_summary(data = prepped$data, period_data = prepped$period_data, "m", 60)
-doc <- read_docx()
-for(i in 1:length(summ$txt)){
-  txt <- summ$txt[i]
-  doc <- doc \%>\% body_add_par(txt, style = "Text")
-}
+prepped <- asr_dataprep(asr_sae, period_from = as.Date("2020-10-10"),
+                        period_to = as.Date("2021-10-10"), trial_type = "m")
+summ <- asr_safety_summary(data = prepped$data,
+                           period_data = prepped$period_data, "m", 60)
+
 # other trial
 asr_safety_summary(data = prepped$data, period_data = prepped$period_data, "o", 60)
 }
