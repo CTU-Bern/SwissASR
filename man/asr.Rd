@@ -21,14 +21,14 @@ asr(
   n_centers_c = "default",
   n_centers_o = "default",
   n_pat_t = "default",
-  n_pat_e = "default (300)",
+  n_pat_e = 300,
   n_pat_c = "default",
   n_pat_p = "default",
   report_date = format(Sys.Date(), format = "\%d/\%m/\%Y"),
   period_from = as.Date("2020-11-02"),
   period_to = as.Date("2020-11-17"),
   template = system.file("extdata/clino_annual_safety_report_bm.docx", package =
-    "swissethics"),
+    "SwissASR"),
   international = FALSE,
   trial_type = "imp",
   var_class = "class",
@@ -193,7 +193,9 @@ Title
 # asr(sae_data) # using defaults
 # # asr(sae_data, trial_type = "med")
 
-
+data(asr_sae)
+file <- tempfile("asr", fileext = ".docx")
+asr(asr_sae, file)
 
 
 
