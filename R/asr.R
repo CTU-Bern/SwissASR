@@ -59,7 +59,11 @@
 
 
 
-#' Title
+#' Fill the Annual Safety Report template
+#'
+#' This function fills out the SwissEthics annual safety report template with a
+#' much as possible. Minor changes will still be required after generation of the
+#' report.
 #'
 #' @param data dataframe containing safety data
 #' @param target filename to save the report to
@@ -117,50 +121,58 @@
 #' @importFrom stringr str_to_lower str_to_sentence
 #' @examples
 #'
+#' data(asr_sae)
+#' file <- tempfile("asr", fileext = ".docx")
+#' asr(asr_sae, file)
 #'
-#' # # demo data
-#' # last_report <- as.Date("2020-11-01")
-#' # n <- 20
-#'
-#' # msample <- function(x, ...) sample(x, n, TRUE, ...)
-#' # sae_data <- data.frame(sae_date = last_report + msample(-20:20),
-#' #      record_id = msample(1:300),
-#' #      age = round(runif(n, 45, 75)),
-#' #      sex = factor(msample(c(c("M", "F")))),
-#' #      country = factor(msample("CH")),
-#' #      site = factor(msample(letters[1:15])),
-#' #      sae = factor(msample(c("headache", "diarhea",
-#' #      "spontaneous unconsciousness", "death", "poor sleep"))),
-#' #      intervention = factor(msample(c("grp1", "grp2"))),
-#' #      outcome = factor(msample(c("resolved", "fatal", "improved",
-#' #      "sequel", "unknown"))),
-#' #      comment = msample(c("", "fribble", "foo", "bar", "foobar")),
-#' #      trt = msample(c("", "trt1", "trt2", "trt3", "trt4")),
-#' #      class = msample(c("SAE", "SUSAR", "SADR")),
-#' #      expected = msample(c(TRUE, FALSE)),
-#' #      devdef = msample(c(TRUE, FALSE)),
-#' #      devattr = msample(c(TRUE, FALSE)),
-#' #      devdef = msample(c(TRUE, FALSE)),
-#' #      devint = msample(c(TRUE, FALSE)),
-#' #      safetymeasure = msample(c(TRUE, FALSE))
-#' # )
-#' # sae_data <- sae_data[order(sae_data$sae_date), ]
-#' # sae_data$sae_n <- 1:nrow(sae_data)
-#' # sae_data$sae_trtstop <- as.Date(ifelse(sae_data$outcome %in% c("resolved", "fatal") &
-#' #    sae_data$trt != "", sae_data$sae_date + runif(2:10, 1), NA), origin = "1970-01-01")
-#' # sae_data$sae_trtstart <- as.Date(ifelse(sae_data$trt != "", sae_data$sae_date + 1, NA),
-#' #    origin = "1970-01-01")
-#' # sae_data$related <- rbinom(n, 1, .25)
-#'
-#' # sae_data$sae_date
-#' # # data <- sae_data
-#'
-#' # asr(sae_data) # using defaults
-#' # # asr(sae_data, trial_type = "med")
-#'
-#'
-#'
-#'
+#' # # more usual use will require passing more information:
+#' # asr(asr_sae, file,
+#' #     # trial info
+#' #     trial_title = "Example Trial Name",
+#' #     protocol_number = "20221002130",
+#' #     basec_number = "",
+#' #     snctp_number = "202200458",
+#' #     swissmedic_number = "....",
+#' #     ec_name = "Kantonale Ethikskommision Bern",
+#' #     product_name = "Drug name",
+#' #     international = FALSE,
+#' #     trial_type = "imp",
+#' #     # Sponsor info
+#' #     sponsor_contact = "Sponsor name, Sponsor phone number, Sponsor email",
+#' #     inst_name_address = "Institute name, Institute address",
+#' #     # site info
+#' #     n_centers_t = 20,        # total number
+#' #     n_centers_p = "default", # planned
+#' #     n_centers_c = "default", # closed
+#' #     n_centers_o = "default", # open
+#' #     # participant info
+#' #     n_pat_t = 1000,          # target
+#' #     n_pat_e = 300,           # enrolled
+#' #     n_pat_c = 0,             # complete
+#' #     n_pat_p = 0,             # prematurely terminated
+#' #     # report info
+#' #     report_date = format(Sys.Date(), format = "%d/%m/%Y"),
+#' #     period_from = as.Date("2020-11-02"),
+#' #     period_to = as.Date("2020-11-17"),
+#' #     # variable mapping
+#' #     var_class = "class",
+#' #     var_sae_n = "sae_n", #sae ID
+#' #     var_part_id = "record_id", #participant ID
+#' #     var_age = "age",
+#' #     var_sex ="sex",
+#' #     var_country = "country",
+#' #     var_site = "site",
+#' #     var_sae = "sae",
+#' #     var_date_onset = "sae_date",
+#' #     var_trt = "trt",
+#' #     var_date_trt_start = "sae_trtstart",
+#' #     var_date_trt_stop = "sae_trtstop",
+#' #     var_outcome = "outcome",
+#' #     var_comment = "comment",
+#' #     var_relation = "related",
+#' #     var_expected = "expected",
+#' #     var_safetymeasure = "safetymeasure"
+#' #     )
 #'
 #'
 #'
@@ -181,7 +193,7 @@ asr <- function(data,
                 , n_centers_c = "default" #closed
                 , n_centers_o = "default" #open
                 , n_pat_t = "default" #target
-                , n_pat_e = "default (300)" #enrolled
+                , n_pat_e = 300 #enrolled
                 , n_pat_c = "default" #complete
                 , n_pat_p = "default" #prematurely terminated
                 , report_date = format(Sys.Date(), format = "%d/%m/%Y")
@@ -216,134 +228,158 @@ asr <- function(data,
   # general housekeeping ----
   trial_type <- match.arg(trial_type, c("imp", "medical device", "other"))
 
-  ## all line listing variables exist ----
-  if(!all(c(var_class, var_sae_n, var_part_id, var_age, var_sex,
-            var_country, var_site, var_sae, var_trt, var_date_onset,
-            var_date_trt_start, var_date_trt_stop, var_outcome,
-            var_comment) %in% names(data))) stop("one or more variables for line listing missing")
-
-  ## rename variables for easier code ----
-  names(data)[names(data) == var_class] <- "class"
-  names(data)[names(data) == var_sae_n] <- "sae_n"
-  names(data)[names(data) == var_part_id] <- "record_id"
-  names(data)[names(data) == var_age] <- "age"
-  names(data)[names(data) == var_sex] <- "sex"
-  if(international) names(data)[names(data) == var_country] <- "country"
-  names(data)[names(data) == var_site] <- "site"
-  names(data)[names(data) == var_sae] <- "sae"
-  names(data)[names(data) == var_date_onset] <- "sae_date"
-  names(data)[names(data) == var_date_trt_start] <- "sae_trtstart"
-  names(data)[names(data) == var_date_trt_stop] <- "sae_trtstop"
-  names(data)[names(data) == var_outcome] <- "outcome"
-  names(data)[names(data) == var_comment] <- "comment"
-  names(data)[names(data) == var_relation] <- "related"
-  names(data)[names(data) == var_trt] <- "trt"
-
-  ## relevant variables exist
-  if(trial_type == "imp"){
-    ## relatedness ----
-    check_fac_char_log_int(data$related)
-    if(is.character(data$related) | is.factor(data$related)){
-      if(!all(str_to_lower(data$related) %in% c("yes", "no")))
-        stop("unexpected 'related' types encountered (allowed are TRUE, FALSE, yes, no, 0, 1)")
-      data$related <- str_to_lower(as.character(data$related)) == "yes"
-    }
-    if(is.integer(data$related)){
-      if(!all(data$related %in% 0:1))
-        stop("unexpected 'related' types encountered (allowed are TRUE, FALSE, yes, no, 0, 1)")
-      data$related <- data$related == 1
-    }
-    related_data <- data[data$related, ]
-
-  }
-  if(trial_type == "medical device"){
-    names(data)[names(data) == var_expected] <- "expected"
-    names(data)[names(data) == var_devdef] <- "devdef"
-    names(data)[names(data) == var_devattr] <- "devattr"
-    names(data)[names(data) == var_devint] <- "devint"
-    names(data)[names(data) == var_safetymeasure] <- "safetymeasure"
-
-    vars <- c("expected", "devdef", "devattr", "devint", "safetymeasure")
-    if(!all(vars %in% names(data))){
-      stop(paste(vars[!vars %in% names(data)], collapse = ", "), " not found in data")
-    }
-
-    ## safetymeasure ----
-    check_log(data$safetymeasure)
-  }
-  if(trial_type == "other"){
-
-  }
-
-
-  ## class ----
-  check_fac_char(data$class)
-  if(!all(data$class %in% c("SAE", "SADR", "SUSAR")))
-    stop("unexpected SAE types encountered (allowed are SAE, SADR and SUSAR)")
-  data$class <- as.character(data$class)
-
-  ## age/sex ----
-  if(!"numeric" %in% class(data$age))
-    stop("'age' should be numeric")
-  check_fac_char(data$sex)
-  data$sex <- as.character(data$sex)
-  ## recode
-  data$sex[grepl("^[WwFf]", data$sex)] <- "F"
-  data$sex[grepl("^[Mm]", data$sex)] <- "M"
-  if(!all(data$sex %in% c("M", "F")))
-    stop("unexpected sexes encountered")
-  data$agesex <- glue("{sprintf('%1.0f', data$age)}/{data$sex}")
-
-  ## country/site ----
-  check_fac_char(data$site)
-  data$site <- as.character(data$site)
-  if(international){
-    check_fac_char(data$country)
-    data$country <- as.character(data$country)
-    data$country_site <- glue("{data$country}, {data$site}")
-  } else {
-    data$country_site <- glue("{data$site}")
-  }
-
-  ## dates ----
-  check_date(data$sae_date)
-  check_date(data$sae_trtstart)
-  check_date(data$sae_trtstop)
-  check_date(period_from)
-  check_date(period_to)
-
-
-  period_data <- subset(data, sae_date >= period_from & sae_date <= period_to)
-
-
-  data$sae_date <- format(data$sae_date, format = "%d/%m/%Y")
-  data$sae_trtstart <- format(data$sae_trtstart, format = "%d/%m/%Y")
-  data$sae_trtstop <- format(data$sae_trtstop, format = "%d/%m/%Y")
-  data$trt_dates <- ifelse(is.na(data$sae_trtstop),
-                           glue("{data$sae_trtstart}", .na = ""),
-                           glue("{data$sae_trtstart} - {data$sae_trtstop}", .na = ""))
-
-  ## outcome ----
-  check_fac_char(data$outcome)
-  data$outcome <- as.character(data$outcome)
-  data$outcome <- str_to_sentence(data$outcome)
-  # if(!all(data$outcome %in% c("Resolved", "Fatal", "Improved", "Sequel", "Unknown")))
-  #   stop("unexpected outcomes encountered (Resolved, Fatal, Improved, Sequel and Unknown are allowed)")
-
-
-
-
-  ## comment ----
-  check_fac_char(data$comment)
-  data$comment <- as.character(data$comment)
-
-  ## sae ----
-  check_fac_char(data$sae)
-  data$sae <- as.character(data$sae)
-
-  ## trt ----
-  check_fac_char(data$trt)
-  data$trt <- as.character(data$trt)
+  # ## all line listing variables exist ----
+  # if(!all(c(var_class, var_sae_n, var_part_id, var_age, var_sex,
+  #           var_country, var_site, var_sae, var_trt, var_date_onset,
+  #           var_date_trt_start, var_date_trt_stop, var_outcome,
+  #           var_comment) %in% names(data))) stop("one or more variables for line listing missing")
+  #
+  # ## rename variables for easier code ----
+  # names(data)[names(data) == var_class] <- "class"
+  # names(data)[names(data) == var_sae_n] <- "sae_n"
+  # names(data)[names(data) == var_part_id] <- "record_id"
+  # names(data)[names(data) == var_age] <- "age"
+  # names(data)[names(data) == var_sex] <- "sex"
+  # if(international) names(data)[names(data) == var_country] <- "country"
+  # names(data)[names(data) == var_site] <- "site"
+  # names(data)[names(data) == var_sae] <- "sae"
+  # names(data)[names(data) == var_date_onset] <- "sae_date"
+  # names(data)[names(data) == var_date_trt_start] <- "sae_trtstart"
+  # names(data)[names(data) == var_date_trt_stop] <- "sae_trtstop"
+  # names(data)[names(data) == var_outcome] <- "outcome"
+  # names(data)[names(data) == var_comment] <- "comment"
+  # names(data)[names(data) == var_relation] <- "related"
+  # names(data)[names(data) == var_trt] <- "trt"
+  #
+  # ## relevant variables exist
+  # if(trial_type == "imp"){
+  #   ## relatedness ----
+  #   check_fac_char_log_int(data$related)
+  #   if(is.character(data$related) | is.factor(data$related)){
+  #     if(!all(str_to_lower(data$related) %in% c("yes", "no")))
+  #       stop("unexpected 'related' types encountered (allowed are TRUE, FALSE, yes, no, 0, 1)")
+  #     data$related <- str_to_lower(as.character(data$related)) == "yes"
+  #   }
+  #   if(is.integer(data$related)){
+  #     if(!all(data$related %in% 0:1))
+  #       stop("unexpected 'related' types encountered (allowed are TRUE, FALSE, yes, no, 0, 1)")
+  #     data$related <- data$related == 1
+  #   }
+  #   related_data <- data[data$related, ]
+  #
+  # }
+  # if(trial_type == "medical device"){
+  #   names(data)[names(data) == var_expected] <- "expected"
+  #   names(data)[names(data) == var_devdef] <- "devdef"
+  #   names(data)[names(data) == var_devattr] <- "devattr"
+  #   names(data)[names(data) == var_devint] <- "devint"
+  #   names(data)[names(data) == var_safetymeasure] <- "safetymeasure"
+  #
+  #   vars <- c("expected", "devdef", "devattr", "devint", "safetymeasure")
+  #   if(!all(vars %in% names(data))){
+  #     stop(paste(vars[!vars %in% names(data)], collapse = ", "), " not found in data")
+  #   }
+  #
+  #   ## safetymeasure ----
+  #   check_log(data$safetymeasure)
+  # }
+  # if(trial_type == "other"){
+  #
+  # }
+  #
+  #
+  # ## class ----
+  # check_fac_char(data$class)
+  # if(!all(data$class %in% c("SAE", "SADR", "SUSAR")))
+  #   stop("unexpected SAE types encountered (allowed are SAE, SADR and SUSAR)")
+  # data$class <- as.character(data$class)
+  #
+  # ## age/sex ----
+  # if(!"numeric" %in% class(data$age))
+  #   stop("'age' should be numeric")
+  # check_fac_char(data$sex)
+  # data$sex <- as.character(data$sex)
+  # ## recode
+  # data$sex[grepl("^[WwFf]", data$sex)] <- "F"
+  # data$sex[grepl("^[Mm]", data$sex)] <- "M"
+  # if(!all(data$sex %in% c("M", "F")))
+  #   stop("unexpected sexes encountered")
+  # data$agesex <- glue("{sprintf('%1.0f', data$age)}/{data$sex}")
+  #
+  # ## country/site ----
+  # check_fac_char(data$site)
+  # data$site <- as.character(data$site)
+  # if(international){
+  #   check_fac_char(data$country)
+  #   data$country <- as.character(data$country)
+  #   data$country_site <- glue("{data$country}, {data$site}")
+  # } else {
+  #   data$country_site <- glue("{data$site}")
+  # }
+  #
+  # ## dates ----
+  # check_date(data$sae_date)
+  # check_date(data$sae_trtstart)
+  # check_date(data$sae_trtstop)
+  # check_date(period_from)
+  # check_date(period_to)
+  #
+  #
+  # period_data <- subset(data, sae_date >= period_from & sae_date <= period_to)
+  #
+  #
+  # data$sae_date <- format(data$sae_date, format = "%d/%m/%Y")
+  # data$sae_trtstart <- format(data$sae_trtstart, format = "%d/%m/%Y")
+  # data$sae_trtstop <- format(data$sae_trtstop, format = "%d/%m/%Y")
+  # data$trt_dates <- ifelse(is.na(data$sae_trtstop),
+  #                          glue("{data$sae_trtstart}", .na = ""),
+  #                          glue("{data$sae_trtstart} - {data$sae_trtstop}", .na = ""))
+  #
+  # ## outcome ----
+  # check_fac_char(data$outcome)
+  # data$outcome <- as.character(data$outcome)
+  # data$outcome <- str_to_sentence(data$outcome)
+  # # if(!all(data$outcome %in% c("Resolved", "Fatal", "Improved", "Sequel", "Unknown")))
+  # #   stop("unexpected outcomes encountered (Resolved, Fatal, Improved, Sequel and Unknown are allowed)")
+#
+#   ## comment ----
+#   check_fac_char(data$comment)
+#   data$comment <- as.character(data$comment)
+#
+#   ## sae ----
+#   check_fac_char(data$sae)
+#   data$sae <- as.character(data$sae)
+#
+#   ## trt ----
+#   check_fac_char(data$trt)
+#   data$trt <- as.character(data$trt)
+  #
+  dfs <- asr_dataprep(data,
+                      period_from = period_from,
+                      period_to = period_to
+                      , trial_type = trial_type
+                      , var_class = var_class
+                      , var_sae_n = var_sae_n #sae ID
+                      , var_part_id = var_part_id #participant ID
+                      , var_age = var_age
+                      , var_sex =var_sex
+                      , var_country = var_country
+                      , var_site = var_site
+                      , var_sae = var_sae
+                      , var_date_onset = var_date_onset
+                      , var_trt = var_trt
+                      , var_date_trt_start = var_date_trt_start
+                      , var_date_trt_stop = var_date_trt_stop
+                      , var_outcome = var_outcome
+                      , var_comment = var_comment
+                      , var_relation = var_relation
+                      , var_expected = var_expected
+                      , var_devdef = var_devdef
+                      , var_devattr = var_devattr
+                      , var_devint = var_devint
+                      , var_safetymeasure = var_safetymeasure)
+  data <- dfs$data
+  period_data <- dfs$period_data
 
 
   # report itself ----
@@ -384,115 +420,138 @@ asr <- function(data,
 
 
   ## participant safety ----
-  map <- data.frame(
-    col_key = c("x1", "x2", "x3", "x4", "x5"),
-    name = c('', 'Fatal cases', 'Serious Adverse Events, SAEs', 'Serious Adverse Drug Reactions, SADRs (only for IMPs)', 'Suspected Unexpected Serious Adverse Reactions, SUSARs (only for IMPs)'),
-    stringsAsFactors = FALSE)
+  summ <- asr_safety_summary(data = data,
+                             period_data = period_data,
+                             trial_type = trial_type,
+                             n_pat_e = n_pat_e)
 
-  if(n_pat_e == "default (300)") n_pat_e <- 300
-  n_pat_e <- as.numeric(n_pat_e)
-  ### IMP ----
-  if(trial_type == "imp"){
-
-    tab <- table(data$sae[data$related == TRUE])
-    tab <- sort(tab, decreasing = TRUE)[1:3]
-    most_freq <- paste0(names(tab), " (", tab, ")", collapse = ", ")
-
-
-    doc <- doc %>%
-      cursor_bookmark("partsafety_text") %>%
-      body_add_par(glue("During the reporting period, {length(unique(period_data$record_id))} of {n_pat_e} participants ({sprintf('%1.1f', length(unique(period_data$record_id))/n_pat_e*100)} %) reported a total of {nrow(period_data)} serious adverse events (SAEs)."), style = "Text") %>%
-      body_add_par(glue("{sum(data$related)} of {nrow(data)} SAEs ({sprintf('%1.1f', sum(data$related)/nrow(data)*100)} %) were classified 'related' to the IMP. The most frequent related SAEs documented were {most_freq}."), style = "Text") %>%
-      body_add_par(glue("{sum(data$class == 'SUSAR')} Suspected Unexpected Serious Adverse Reactions (SUSARs) occurred during the reporting period, which have been notified to the Swiss competent authorities."), style = "Text")
-
-    tab <- tribble(
-      ~x1, ~x2, ~x3, ~x4, ~x5,
-      # row 1
-      'Number of cases (during reporting period)',
-      sum(period_data$outcome == "Fatal"),
-      nrow(period_data),
-      sum(period_data$class == "SADR"),
-      sum(period_data$class == "SUSAR"),
-      # row 2
-      'Number of cases (cumulative) since the start of the clinical trial',
-      sum(data$outcome == "Fatal"),
-      nrow(data),
-      sum(data$class == "SADR"),
-      sum(data$class == "SUSAR")
-    )
-
-
-
-  }
-  ### medical device ----
-  if(trial_type == "medical device"){
-
-    tab <- table(data$sae)
-    tab <- sort(tab, decreasing = TRUE)[1:3]
-    most_freq <- paste0(names(tab), " (", tab, ")", collapse = ", ")
-
-    doc <- doc %>%
-      cursor_bookmark("partsafety_text") %>%
-      body_add_par(glue("During the reporting period, a total of {nrow(period_data)} serious adverse events (SAEs) have been reported."), style = "Text") %>%
-      body_add_par(glue("In {sum(data$dev_attr)} of {nrow(data)} SAEs ({sprintf('%1.1f', sum(data$dev_attr)/nrow(data)*100)} %) it cannot be excluded that the events are attributable to the medical device under investigation."), style = "Text") %>%
-      body_add_par(glue("In {sum(data$dev_int)} of {nrow(data)} SAEs ({sprintf('%1.1f', sum(data$dev_int)/nrow(data)*100)} %) it cannot be excluded that the events are attributable to an intervention undertaken in the clinical trial."), style = "Text") %>%
-      body_add_par(glue("The most frequent SAEs documented were {most_freq}."), style = "Text") %>%
-      body_add_par(glue("With respect to the expectedness of the event, {sum(data$expected)} ({sprintf('%1.1f', sum(data$expected)/nrow(data)*100)} %) of the SAEs were expected and {sum(!data$expected)} ({sprintf('%1.1f', sum(!data$expected)/nrow(data)*100)} %) were classified as unexpected."), style = "Text") %>%
-      body_add_par(glue("{sum(data$devdef)} device deficiencies were observed."), style = "Text") %>%
-      body_add_par(glue("{sum(safetymeasure)} health hazards that required safety-related measures occurred."), style = "Text")
-
-
-    tab <- tribble(
-      ~x1, ~x2, ~x3, ~x4, ~x5,
-      # row 1
-      'Number of cases (during reporting period)',
-      sum(period_data$outcome == "Fatal"),
-      nrow(period_data),
-      NA,
-      NA,
-      # row 2
-      'Number of cases (cumulative) since the start of the clinical trial',
-      sum(data$outcome == "Fatal"),
-      nrow(data),
-      NA,
-      NA
-    )
-
+  doc <- doc %>%
+    cursor_bookmark("partsafety_text")
+  for(i in 1:length(summ$txt)){
+    txt <- summ$txt[i]
+    doc <- doc %>% body_add_par(txt, style = "Text")
   }
 
-  ### other ----
-  if(trial_type == "other"){
-    doc <- doc %>%
-      cursor_bookmark("partsafety_text") %>%
-      body_add_par(glue("During the reporting period, {length(unique(period_data$record_id))} of {n_pat_e} participants ({sprintf('%1.1f', length(unique(period_data$record_id))/n_pat_e*100)} %) reported a total of {nrow(period_data)} serious adverse events (SAEs; with possible relationship to the intervention)."), style = "Text") %>%
-      body_add_par(glue("The most frequent SAEs documented were {most_freq}."), style = "Text")
+  # map <- data.frame(
+  #   col_key = c("x1", "x2", "x3", "x4", "x5"),
+  #   name = c('', 'Fatal cases', 'Serious Adverse Events, SAEs', 'Serious Adverse Drug Reactions, SADRs (only for IMPs)', 'Suspected Unexpected Serious Adverse Reactions, SUSARs (only for IMPs)'),
+  #   stringsAsFactors = FALSE)
+  #
+  # if(n_pat_e == "default (300)") n_pat_e <- 300
+  # n_pat_e <- as.numeric(n_pat_e)
+  # ### IMP ----
+  # if(trial_type == "imp"){
+  #
+  #   tab <- table(data$sae[data$related == TRUE])
+  #   tab <- sort(tab, decreasing = TRUE)[1:3]
+  #   most_freq <- paste0(names(tab), " (", tab, ")", collapse = ", ")
+  #
+  #
+  #   doc <- doc %>%
+  #     cursor_bookmark("partsafety_text") %>%
+  #     body_add_par(glue("During the reporting period, {length(unique(period_data$record_id))} of {n_pat_e} participants ({sprintf('%1.1f', length(unique(period_data$record_id))/n_pat_e*100)} %) reported a total of {nrow(period_data)} serious adverse events (SAEs)."), style = "Text") %>%
+  #     body_add_par(glue("{sum(data$related)} of {nrow(data)} SAEs ({sprintf('%1.1f', sum(data$related)/nrow(data)*100)} %) were classified 'related' to the IMP. The most frequent related SAEs documented were {most_freq}."), style = "Text") %>%
+  #     body_add_par(glue("{sum(data$class == 'SUSAR')} Suspected Unexpected Serious Adverse Reactions (SUSARs) occurred during the reporting period, which have been notified to the Swiss competent authorities."), style = "Text")
+  #
+  #   tab <- tribble(
+  #     ~x1, ~x2, ~x3, ~x4, ~x5,
+  #     # row 1
+  #     'Number of cases (during reporting period)',
+  #     sum(period_data$outcome == "Fatal"),
+  #     nrow(period_data),
+  #     sum(period_data$class == "SADR"),
+  #     sum(period_data$class == "SUSAR"),
+  #     # row 2
+  #     'Number of cases (cumulative) since the start of the clinical trial',
+  #     sum(data$outcome == "Fatal"),
+  #     nrow(data),
+  #     sum(data$class == "SADR"),
+  #     sum(data$class == "SUSAR")
+  #   )
+  #
+  #
+  #
+  # }
+  # ### medical device ----
+  # if(trial_type == "medical device"){
+  #
+  #   tab <- table(data$sae)
+  #   tab <- sort(tab, decreasing = TRUE)[1:3]
+  #   most_freq <- paste0(names(tab), " (", tab, ")", collapse = ", ")
+  #
+  #   doc <- doc %>%
+  #     cursor_bookmark("partsafety_text") %>%
+  #     body_add_par(glue("During the reporting period, a total of {nrow(period_data)} serious adverse events (SAEs) have been reported."), style = "Text") %>%
+  #     body_add_par(glue("In {sum(data$dev_attr)} of {nrow(data)} SAEs ({sprintf('%1.1f', sum(data$dev_attr)/nrow(data)*100)} %) it cannot be excluded that the events are attributable to the medical device under investigation."), style = "Text") %>%
+  #     body_add_par(glue("In {sum(data$dev_int)} of {nrow(data)} SAEs ({sprintf('%1.1f', sum(data$dev_int)/nrow(data)*100)} %) it cannot be excluded that the events are attributable to an intervention undertaken in the clinical trial."), style = "Text") %>%
+  #     body_add_par(glue("The most frequent SAEs documented were {most_freq}."), style = "Text") %>%
+  #     body_add_par(glue("With respect to the expectedness of the event, {sum(data$expected)} ({sprintf('%1.1f', sum(data$expected)/nrow(data)*100)} %) of the SAEs were expected and {sum(!data$expected)} ({sprintf('%1.1f', sum(!data$expected)/nrow(data)*100)} %) were classified as unexpected."), style = "Text") %>%
+  #     body_add_par(glue("{sum(data$devdef)} device deficiencies were observed."), style = "Text") %>%
+  #     body_add_par(glue("{sum(safetymeasure)} health hazards that required safety-related measures occurred."), style = "Text")
+  #
+  #
+  #   tab <- tribble(
+  #     ~x1, ~x2, ~x3, ~x4, ~x5,
+  #     # row 1
+  #     'Number of cases (during reporting period)',
+  #     sum(period_data$outcome == "Fatal"),
+  #     nrow(period_data),
+  #     NA,
+  #     NA,
+  #     # row 2
+  #     'Number of cases (cumulative) since the start of the clinical trial',
+  #     sum(data$outcome == "Fatal"),
+  #     nrow(data),
+  #     NA,
+  #     NA
+  #   )
+  #
+  # }
+  #
+  # ### other ----
+  # if(trial_type == "other"){
+  #   doc <- doc %>%
+  #     cursor_bookmark("partsafety_text") %>%
+  #     body_add_par(glue("During the reporting period, {length(unique(period_data$record_id))} of {n_pat_e} participants ({sprintf('%1.1f', length(unique(period_data$record_id))/n_pat_e*100)} %) reported a total of {nrow(period_data)} serious adverse events (SAEs; with possible relationship to the intervention)."), style = "Text") %>%
+  #     body_add_par(glue("The most frequent SAEs documented were {most_freq}."), style = "Text")
+  #
+  #   tab <- tribble(
+  #     ~x1, ~x2, ~x3, ~x4, ~x5,
+  #     # row 1
+  #     'Number of cases (during reporting period)',
+  #     sum(period_data$outcome == "Fatal"),
+  #     nrow(period_data),
+  #     NA,
+  #     NA,
+  #     # row 2
+  #     'Number of cases (cumulative) since the start of the clinical trial',
+  #     sum(data$outcome == "Fatal"),
+  #     nrow(data),
+  #     NA,
+  #     NA
+  #   )
+  #
+  # }
 
-    tab <- tribble(
-      ~x1, ~x2, ~x3, ~x4, ~x5,
-      # row 1
-      'Number of cases (during reporting period)',
-      sum(period_data$outcome == "Fatal"),
-      nrow(period_data),
-      NA,
-      NA,
-      # row 2
-      'Number of cases (cumulative) since the start of the clinical trial',
-      sum(data$outcome == "Fatal"),
-      nrow(data),
-      NA,
-      NA
-    )
+  # ft <- tab %>%
+  #   flextable() %>%
+  #   set_header_df(mapping = map, key = "col_key") %>%
+  #   valign(part = "head", valign = "top") %>%
+  #   border(border = fp_border(color = "#4FB4E0"), part="all") %>%
+  #   fontsize(size = 8, part = "all") %>%
+  #   font(fontname = "Helvetica", part = "all") %>%
+  #   width(1:5, (18.57/5)*.393)
 
-  }
-
-  ft <- tab %>%
+  ft <- summ$tab %>%
     flextable() %>%
-    set_header_df(mapping = map, key = "col_key") %>%
+    set_header_df(mapping = summ$tab_map, key = "col_key") %>%
     valign(part = "head", valign = "top") %>%
     border(border = fp_border(color = "#4FB4E0"), part="all") %>%
     fontsize(size = 8, part = "all") %>%
     font(fontname = "Helvetica", part = "all") %>%
-    width(1:5, (18.57/5)*.393)
+    width(1:ncol(summ$tab), (18.57/ncol(summ$tab))*.393)
+
+
   doc <- doc %>%
     cursor_bookmark("partsafety_tab") %>%
     body_add_flextable(ft)
