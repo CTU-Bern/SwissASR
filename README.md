@@ -3,11 +3,14 @@
 
 # `SwissASR`
 
+[![](https://img.shields.io/badge/dev%20version-0.2.0-blue.svg)](https://github.com/CTU-Bern/redcaptools)
+[![R-CMD-check](https://github.com/CTU-Bern/SwissASR/workflows/R-CMD-check/badge.svg)](https://github.com/CTU-Bern/SwissASR/actions)
+
 Participant safety is a big issue in clinical trials and reporting
 safety related events to the authorities is mandatory for certain trial
 types. One aspect of this is the annual safety report (ASR) which
 contains both summary information and listings of safety events. The
-`swiss_asr` R package helps in compiling this report.
+`SwissASR` R package helps in compiling this report.
 
 Provide a dataframe with the given variables and the function will
 return a filled out (as far as possible - some things require PI input)
