@@ -90,6 +90,7 @@
 
 
 #' Prepare data for the \code{asr} function
+#'
 #' This function allows the use of the \code{asr_safety_summary} function outside
 #' of the normal \code{asr} function, which might be desirable to get an overview
 #' of the information in a different format to MS Word.
