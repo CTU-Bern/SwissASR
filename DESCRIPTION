@@ -1,6 +1,6 @@
 Package: SwissASR
 Title: Automated Completion of the SwissEthics Annual Safety Report
-Version: 0.2.0
+Version: 0.3.0
 Authors@R: 
     person(given = "Alan G.",
            family = "Haynes",
@@ -12,7 +12,7 @@ License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.2.1
+RoxygenNote: 7.2.3
 Depends:
     R (>= 2.10)
 Imports:
