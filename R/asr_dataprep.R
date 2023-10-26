@@ -130,7 +130,8 @@ asr_dataprep <- function(data
                          , var_devdef = "devdef"
                          , var_devattr = "devattr"
                          , var_devint = "devint"
-                         , var_safetymeasure = "safetymeasure"){
+                         , var_safetymeasure = "safetymeasure"
+                         , var_tx = NULL){
 
   # general housekeeping ----
   trial_type <- match.arg(trial_type, c("imp", "medical device", "other"))
@@ -149,7 +150,18 @@ asr_dataprep <- function(data
         paste(listvars[!listvars %in% names(data)], collapse = ", "),
         "variables missing for line listing"
         )
-      )}
+    )}
+  tx_var <- !is.null(var_tx)
+  if(tx_var){
+    if(!var_tx %in% names(data)){
+      stop(
+        paste(
+          var_tx,
+          "variable missing for line listing"
+        )
+      )
+    }
+  }
 
   ## rename variables for easier code ----
   names(data)[names(data) == var_class] <- "class"
@@ -167,6 +179,9 @@ asr_dataprep <- function(data
   names(data)[names(data) == var_comment] <- "comment"
   names(data)[names(data) == var_relation] <- "related"
   names(data)[names(data) == var_trt] <- "trt"
+  if(tx_var){
+    names(data)[names(data) == var_tx] <- "intervention"
+  }
 
   ## relevant variables exist
   if(trial_type == "imp"){

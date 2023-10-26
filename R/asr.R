@@ -62,8 +62,10 @@
 #' Fill the Annual Safety Report template
 #'
 #' This function fills out the SwissEthics annual safety report template with a
-#' much as possible. Minor changes will still be required after generation of the
+#' much as possible. Minor (formatting) changes will still be required after generation of the
 #' report.
+#'
+#' Use of the \code{var_tx} argument results in the indicated variable being included in the line listing.
 #'
 #' @param data dataframe containing safety data
 #' @param target filename to save the report to
@@ -110,6 +112,7 @@
 #' @param var_devattr variable containing whether the SAE is attributable to the device
 #' @param var_devint variable containing whether the SAE is attributable to an intervention in the trial
 #' @param var_safetymeasure variable containing whether the SAE required safety related measures
+#' @param var_tx variable indicating the intervention group. If provided, this variable will be included in the line listing
 #'
 #' @return nothing in R, creates a docx file in the \code{target} location
 #' @export
@@ -223,6 +226,7 @@ asr <- function(data,
                 , var_devattr = "devattr"
                 , var_devint = "devint"
                 , var_safetymeasure = "safetymeasure"
+                , var_tx = NULL
 ){
 
   # general housekeeping ----
@@ -377,9 +381,11 @@ asr <- function(data,
                       , var_devdef = var_devdef
                       , var_devattr = var_devattr
                       , var_devint = var_devint
-                      , var_safetymeasure = var_safetymeasure)
+                      , var_safetymeasure = var_safetymeasure
+                      , var_tx = var_tx)
   data <- dfs$data
   period_data <- dfs$period_data
+  tx_var <- !is.null(var_tx)
 
 
   # report itself ----
@@ -560,21 +566,38 @@ asr <- function(data,
 
 
   ## line listing ----
-  llist <- data[, c("class", "sae_n", "record_id", "agesex", "country_site",
-                    "sae", "trt", "sae_date", "trt_dates", "outcome", "comment")]
-  ## llist <- llist[c(1,1:nrow(llist)), ]
-  names(llist) <- c("SAE/\nSADR/\nSUSAR",
-                    "Serious adverse event/ reaction No.",
-                    "Participants ID",
-                    "Age / Sex (F=female, M=male)",
-                    "Country and site in which participant is/was enrolled (for multicentre, international trials)",
-                    "Description of event/ reaction",
-                    "Description of intervention (dosage, schedule, route, if applicable)",
-                    "Date of onset",	"Date of treatment (start and stop)",
-                    "Outcome (e.g. resolved, fatal, improved, sequel, unknown)",
-                    "Comments, if relevant (e.g. causality assessment, relationship)"
-  )
-
+  if(!tx_var){
+    llist <- data[, c("class", "sae_n", "record_id", "agesex", "country_site",
+                      "sae", "trt", "sae_date", "trt_dates", "outcome", "comment")]
+    ## llist <- llist[c(1,1:nrow(llist)), ]
+    names(llist) <- c("SAE/\nSADR/\nSUSAR",
+                      "Serious adverse event/ reaction No.",
+                      "Participants ID",
+                      "Age / Sex (F=female, M=male)",
+                      "Country and site in which participant is/was enrolled (for multicentre, international trials)",
+                      "Description of event/ reaction",
+                      "Description of intervention (dosage, schedule, route, if applicable)",
+                      "Date of onset",	"Date of treatment (start and stop)",
+                      "Outcome (e.g. resolved, fatal, improved, sequel, unknown)",
+                      "Comments, if relevant (e.g. causality assessment, relationship)"
+    )
+  } else {
+    llist <- data[, c("class", "sae_n", "record_id", "intervention", "agesex", "country_site",
+                      "sae", "trt", "sae_date", "trt_dates", "outcome", "comment")]
+    ## llist <- llist[c(1,1:nrow(llist)), ]
+    names(llist) <- c("SAE/\nSADR/\nSUSAR",
+                      "Serious adverse event/ reaction No.",
+                      "Participants ID",
+                      "Intervention",
+                      "Age / Sex (F=female, M=male)",
+                      "Country and site in which participant is/was enrolled (for multicentre, international trials)",
+                      "Description of event/ reaction",
+                      "Description of intervention (dosage, schedule, route, if applicable)",
+                      "Date of onset",	"Date of treatment (start and stop)",
+                      "Outcome (e.g. resolved, fatal, improved, sequel, unknown)",
+                      "Comments, if relevant (e.g. causality assessment, relationship)"
+    )
+  }
   llist_ft <- flextable(llist) %>%
     add_header_lines("Line listing of SAEs, SADRs and SUSARs, including international cases
 (code and version of used standard (e.g. MedDRA or CTCAE) should be indicated, details on SUSARs will be attached as appendices)") %>%

@@ -50,7 +50,8 @@ asr(
   var_devdef = "devdef",
   var_devattr = "devattr",
   var_devint = "devint",
-  var_safetymeasure = "safetymeasure"
+  var_safetymeasure = "safetymeasure",
+  var_tx = NULL
 )
 }
 \arguments{
@@ -143,14 +144,19 @@ asr(
 \item{var_devint}{variable containing whether the SAE is attributable to an intervention in the trial}
 
 \item{var_safetymeasure}{variable containing whether the SAE required safety related measures}
+
+\item{var_tx}{variable indicating the intervention group. If provided, this variable will be included in the line listing}
 }
 \value{
 nothing in R, creates a docx file in the \code{target} location
 }
 \description{
 This function fills out the SwissEthics annual safety report template with a
-much as possible. Minor changes will still be required after generation of the
+much as possible. Minor (formatting) changes will still be required after generation of the
 report.
+}
+\details{
+Use of the \code{var_tx} argument results in the indicated variable being included in the line listing.
 }
 \examples{
 

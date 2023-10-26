@@ -32,7 +32,8 @@ asr_dataprep(
   var_devdef = "devdef",
   var_devattr = "devattr",
   var_devint = "devint",
-  var_safetymeasure = "safetymeasure"
+  var_safetymeasure = "safetymeasure",
+  var_tx = NULL
 )
 }
 \arguments{
@@ -85,6 +86,8 @@ asr_dataprep(
 \item{var_devint}{variable containing whether the SAE is attributable to an intervention in the trial}
 
 \item{var_safetymeasure}{variable containing whether the SAE required safety related measures}
+
+\item{var_tx}{variable indicating the intervention group. If provided, this variable will be included in the line listing}
 }
 \value{
 a list of 2 dataframes (\code{data} containing all data submitted to
