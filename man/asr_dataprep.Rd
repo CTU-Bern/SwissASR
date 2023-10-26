@@ -2,10 +2,7 @@
 % Please edit documentation in R/asr_dataprep.R
 \name{asr_dataprep}
 \alias{asr_dataprep}
-\title{Prepare data for the \code{asr} function
-This function allows the use of the \code{asr_safety_summary} function outside
-of the normal \code{asr} function, which might be desirable to get an overview
-of the information in a different format to MS Word.}
+\title{Prepare data for the \code{asr} function}
 \usage{
 asr_dataprep(
   data,
@@ -95,7 +92,6 @@ the function and \code{period_data} which contains only the data for the relevan
 period) with variables renamed to those expected by \code{asr_safety_summary}
 }
 \description{
-Prepare data for the \code{asr} function
 This function allows the use of the \code{asr_safety_summary} function outside
 of the normal \code{asr} function, which might be desirable to get an overview
 of the information in a different format to MS Word.
