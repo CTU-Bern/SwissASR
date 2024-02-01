@@ -122,6 +122,7 @@
 #' @importFrom tibble tribble
 #' @importFrom glue glue
 #' @importFrom stringr str_to_lower str_to_sentence
+#' @importFrom doconv docx_update
 #' @examples
 #'
 #' data(asr_sae)
@@ -202,7 +203,7 @@ asr <- function(data,
                 , report_date = format(Sys.Date(), format = "%d/%m/%Y")
                 , period_from = as.Date("2020-11-02")
                 , period_to = as.Date("2020-11-17")
-                , template = system.file("extdata/clino_annual_safety_report_bm.docx", package = "SwissASR")
+                , template = system.file("extdata/clino_annual_safety_report_fm.docx", package = "SwissASR")
                 , international = FALSE
                 , trial_type = "imp"
                 # dataframe variables
@@ -394,49 +395,72 @@ asr <- function(data,
 
 
   # ..general info, details of trial ----
+  #
+  # for(i in c("trial_title",
+  #            "protocol_number",
+  #            "basec_number",
+  #            "snctp_number",
+  #            "swissmedic_number",
+  #            "ec_name",
+  #            "product_name",
+  #            "sponsor_contact",
+  #            "inst_name_address",
+  #            "report_date",
+  #            "period",
+  #            "n_centers_t",
+  #            "n_centers_p",
+  #            "n_centers_c",
+  #            "n_centers_o",
+  #            "n_pat_t",
+  #            "n_pat_e",
+  #            "n_pat_c",
+  #            "n_pat_p")){
+  #   x <- get(i)
+  #   doc <- doc %>%
+  #     cursor_bookmark(i) %>%
+  #     body_add_par(x, pos = "after")
+  # }
+
+
   period <- glue("{period_from} to {period_to}")
-
-  for(i in c("trial_title",
-             "protocol_number",
-             "basec_number",
-             "snctp_number",
-             "swissmedic_number",
-             "ec_name",
-             "product_name",
-             "sponsor_contact",
-             "inst_name_address",
-             "report_date",
-             "period",
-             "n_centers_t",
-             "n_centers_p",
-             "n_centers_c",
-             "n_centers_o",
-             "n_pat_t",
-             "n_pat_e",
-             "n_pat_c",
-             "n_pat_p")){
-    x <- get(i)
+## New code to insert the fields instead of bookmarks
     doc <- doc %>%
-      cursor_bookmark(i) %>%
-      body_add_par(x, pos = "after")
-  }
+      officer::set_doc_properties(trial_title = get("trial_title"),
+                                  protocol_number = get("protocol_number"),
+                                  basec_number = get("basec_number"),
+                                  snctp_number = get("snctp_number"),
+                                  swissmedic_number = get("swissmedic_number"),
+                                  ec_name = get("ec_name"),
+                                  product_name = get("product_name"),
+                                  sponsor_contact = get("sponsor_contact"),
+                                  inst_name_address = get("inst_name_address"),
+                                  report_date = get("report_date"),
+                                  period = get("period"),
+                                  n_centers_t = get("n_centers_t"),
+                                  n_centers_p = get("n_centers_p"),
+                                  n_centers_c = get("n_centers_c"),
+                                  n_centers_o = get("n_centers_o"),
+                                  n_pat_t = as.character(n_pat_t),
+                                  n_pat_e = as.character(n_pat_e),
+                                  n_pat_c = as.character(n_pat_c),
+                                  n_pat_p = as.character(n_pat_p) )
 
 
-
-
-
-  ## participant safety ----
+  #}  ## participant safety ----
   summ <- asr_safety_summary(data = data,
                              period_data = period_data,
                              trial_type = trial_type,
                              n_pat_e = n_pat_e)
 
+  # doc <- doc %>%
+  #   cursor_bookmark("partsafety_text")
+  # for(i in 1:length(summ$txt)){
+  #   txt <- summ$txt[i]
+  #   doc <- doc %>% body_add_par(txt, style = "Text")
+  # }
+
   doc <- doc %>%
-    cursor_bookmark("partsafety_text")
-  for(i in 1:length(summ$txt)){
-    txt <- summ$txt[i]
-    doc <- doc %>% body_add_par(txt, style = "Text")
-  }
+    officer::set_doc_properties(partsafety_text = paste0(summ$txt, collapse = " ") )
 
   # map <- data.frame(
   #   col_key = c("x1", "x2", "x3", "x4", "x5"),
@@ -612,6 +636,11 @@ asr <- function(data,
 
   print(doc, target = target)
 
+
+   doc <- doc %>%
+     doc_properties()
+
+  doconv::docx_update(input = target)
 
 }
 
