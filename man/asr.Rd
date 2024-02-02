@@ -27,7 +27,7 @@ asr(
   report_date = format(Sys.Date(), format = "\%d/\%m/\%Y"),
   period_from = as.Date("2020-11-02"),
   period_to = as.Date("2020-11-17"),
-  template = system.file("extdata/clino_annual_safety_report_bm.docx", package =
+  template = system.file("extdata/clino_annual_safety_report_fm.docx", package =
     "SwissASR"),
   international = FALSE,
   trial_type = "imp",
