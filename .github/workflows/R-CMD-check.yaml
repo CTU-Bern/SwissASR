@@ -63,7 +63,7 @@ jobs:
            brew install --cask libreoffice
 
       - name: install libreoffice for ubuntu
-        if: matrix.config.os == 'ubuntu-20.04'
+        if: matrix.config.os == 'ubuntu-latest'
         run: |
            sudo apt install libreoffice
 
