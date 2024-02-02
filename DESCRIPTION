@@ -11,7 +11,7 @@ Authors@R:
            family = "Branca",
            role = "ctb",
            email = "mattia.branca@unibe.ch",
-           comment = c(ORCID = "0000-0002-8063-7882"))
+           comment = c(ORCID = "0000-0002-8063-7882")) )
 Description: Completing the SwissEthics Annual Safety Report can be tiresome. This package eases the pain by providing an automated method to fill it out.
 License: MIT + file LICENSE
 Encoding: UTF-8
