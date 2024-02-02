@@ -2,11 +2,16 @@ Package: SwissASR
 Title: Automated Completion of the SwissEthics Annual Safety Report
 Version: 0.3.0
 Authors@R: 
-    person(given = "Alan G.",
+    c(person(given = "Alan G.",
            family = "Haynes",
            role = c("aut", "cre"),
            email = "alan.haynes@unibe.ch",
-           comment = c(ORCID = "0000-0003-1374-081X"))
+           comment = c(ORCID = "0000-0003-1374-081X")),
+      person(given = "Mattia",
+           family = "Branca",
+           role = "ctb",
+           email = "mattia.branca@unibe.ch",
+           comment = c(ORCID = "0000-0002-8063-7882"))
 Description: Completing the SwissEthics Annual Safety Report can be tiresome. This package eases the pain by providing an automated method to fill it out.
 License: MIT + file LICENSE
 Encoding: UTF-8

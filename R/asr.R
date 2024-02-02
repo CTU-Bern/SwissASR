@@ -425,7 +425,7 @@ asr <- function(data,
   period <- glue("{period_from} to {period_to}")
 ## New code to insert the fields instead of bookmarks
     doc <- doc %>%
-      officer::set_doc_properties(trial_title = get("trial_title"),
+      set_doc_properties(trial_title = get("trial_title"),
                                   protocol_number = get("protocol_number"),
                                   basec_number = get("basec_number"),
                                   snctp_number = get("snctp_number"),
@@ -640,7 +640,7 @@ asr <- function(data,
    doc <- doc %>%
      doc_properties()
 
-  doconv::docx_update(input = target)
+  docx_update(input = target)
 
 }
 
