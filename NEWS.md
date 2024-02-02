@@ -1,3 +1,7 @@
+# swissethics 0.4.0
+
+* Modified some bookmarks into fields such that the replacement can still happen in the table and not after the table as per recent update of officer package. This solves the issue (#9). 
+
 # swissethics 0.3.0
 
 * Additional option to include an intervention (random allocation) variable into the line listing (option `var_tx`), which is sometimes requested by ethics bodies.
