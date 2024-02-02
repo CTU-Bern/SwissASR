@@ -1,7 +1,7 @@
 # swissethics 0.4.0
 
 * Modified some bookmarks into word fields such that the replacement can still happen in tables and not after them, as per recent update of officer package. This resolves issue #9.
-* The above change requires use of the `doconv` package, which may require setting some permissions on **MAC OS** (for details see [the doconv documentation](https://github.com/ardata-fr/doconv), and **may not work on Ubuntu** systems.
+* The above change requires use of the `doconv` package, which may require **setting some permissions on MAC OS** (for details see [the doconv documentation](https://github.com/ardata-fr/doconv)), and **may not work on Ubuntu** systems.
 
 # swissethics 0.3.0
 
