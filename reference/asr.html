@@ -19,7 +19,7 @@ report."><meta property="og:image" content="/logo.png"><!-- mathjax --><script s
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">SwissASR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.3.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.4.0</span>
       </span>
     </div>
 
@@ -74,7 +74,7 @@ report.</p>
 <span>  report_date <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/format.html" class="external-link">format</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Sys.time.html" class="external-link">Sys.Date</a></span><span class="op">(</span><span class="op">)</span>, format <span class="op">=</span> <span class="st">"%d/%m/%Y"</span><span class="op">)</span>,</span>
 <span>  period_from <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/as.Date.html" class="external-link">as.Date</a></span><span class="op">(</span><span class="st">"2020-11-02"</span><span class="op">)</span>,</span>
 <span>  period_to <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/as.Date.html" class="external-link">as.Date</a></span><span class="op">(</span><span class="st">"2020-11-17"</span><span class="op">)</span>,</span>
-<span>  template <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata/clino_annual_safety_report_bm.docx"</span>, package <span class="op">=</span></span>
+<span>  template <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata/clino_annual_safety_report_fm.docx"</span>, package <span class="op">=</span></span>
 <span>    <span class="st">"SwissASR"</span><span class="op">)</span>,</span>
 <span>  international <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  trial_type <span class="op">=</span> <span class="st">"imp"</span>,</span>
@@ -305,6 +305,7 @@ report.</p>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">asr_sae</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">file</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempfile</a></span><span class="op">(</span><span class="st">"asr"</span>, fileext <span class="op">=</span> <span class="st">".docx"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu">asr</span><span class="op">(</span><span class="va">asr_sae</span>, <span class="va">file</span><span class="op">)</span></span></span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in "run(\"osascript\", script_path)":</span> <span style="color: #BBBB00;">!</span> System command 'osascript' failed</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># # more usual use will require passing more information:</span></span></span>
 <span class="r-in"><span><span class="co"># asr(asr_sae, file,</span></span></span>
