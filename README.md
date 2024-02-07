@@ -1,7 +1,7 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# `SwissASR`
+# `SwissASR` <img src='man/figures/logo.png' align="right" width="200">
 
 [![](https://img.shields.io/badge/dev%20version-0.4.0-blue.svg)](https://github.com/CTU-Bern/redcaptools)
 [![R-CMD-check](https://github.com/CTU-Bern/SwissASR/workflows/R-CMD-check/badge.svg)](https://github.com/CTU-Bern/SwissASR/actions)
