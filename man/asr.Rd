@@ -13,6 +13,7 @@ asr(
   snctp_number = "default",
   swissmedic_number = "default",
   ec_name = "default",
+  tr_number = "default",
   product_name = "default",
   sponsor_contact = "default name, default number, default email",
   inst_name_address = "default name, default address",
@@ -24,6 +25,14 @@ asr(
   n_pat_e = 300,
   n_pat_c = "default",
   n_pat_p = "default",
+  n_centers_t_ch = "default",
+  n_centers_p_ch = "default",
+  n_centers_c_ch = "default",
+  n_centers_o_ch = "default",
+  n_pat_t_ch = "default",
+  n_pat_e_ch = 300,
+  n_pat_c_ch = "default",
+  n_pat_p_ch = "default",
   report_date = format(Sys.Date(), format = "\%d/\%m/\%Y"),
   period_from = as.Date("2020-11-02"),
   period_to = as.Date("2020-11-17"),
@@ -71,6 +80,8 @@ asr(
 
 \item{ec_name}{EC name (Lead EC and/concerned EC)}
 
+\item{tr_number}{Number for Transplantation Clinical Trials (FOPH number)}
+
 \item{product_name}{product name or intervention}
 
 \item{sponsor_contact}{contact details of sponsor(-investigator)}
@@ -92,6 +103,22 @@ asr(
 \item{n_pat_c}{number of completed participants}
 
 \item{n_pat_p}{number of prematurely terminated participants}
+
+\item{n_centers_t_ch}{total number of participating centres in CH}
+
+\item{n_centers_p_ch}{planned number of participating centres in CH}
+
+\item{n_centers_c_ch}{number of closed centres in CH}
+
+\item{n_centers_o_ch}{number of open centres in CH}
+
+\item{n_pat_t_ch}{target number of participants in CH}
+
+\item{n_pat_e_ch}{number of enrolled participants in CH}
+
+\item{n_pat_c_ch}{number of completed participants in CH}
+
+\item{n_pat_p_ch}{number of prematurely terminated participants in CH}
 
 \item{report_date}{report date}
 
@@ -173,6 +200,7 @@ asr(asr_sae, file)
 #     snctp_number = "202200458",
 #     swissmedic_number = "....",
 #     ec_name = "Kantonale Ethikskommision Bern",
+#     tr_number = "",
 #     product_name = "Drug name",
 #     international = FALSE,
 #     trial_type = "imp",

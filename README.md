@@ -1,9 +1,9 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# `SwissASR`
+# `SwissASR` <img src='man/figures/logo.png' align="right" width="200">
 
-[![](https://img.shields.io/badge/dev%20version-0.3.0-blue.svg)](https://github.com/CTU-Bern/redcaptools)
+[![](https://img.shields.io/badge/dev%20version-0.4.0-blue.svg)](https://github.com/CTU-Bern/redcaptools)
 [![R-CMD-check](https://github.com/CTU-Bern/SwissASR/workflows/R-CMD-check/badge.svg)](https://github.com/CTU-Bern/SwissASR/actions)
 
 Participant safety is a big issue in clinical trials and reporting
@@ -15,7 +15,7 @@ contains both summary information and listings of safety events. The
 Provide a dataframe with the given variables and the function will
 return a filled out (as far as possible - some things require PI input)
 ASR in MS Word format. This could then be forwarded to the PI for
-supplimental details, signing and submission to the relevant governing
+supplemental details, signing and submission to the relevant governing
 bodies.
 
 ## Example usage
