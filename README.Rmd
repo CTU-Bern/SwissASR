@@ -58,14 +58,14 @@ asr(data,
     product_name = "Example product", 
     sponsor_contact = "Prof. Dr. Example", 
     inst_name_address = "Example institute, Example street, Example City", 
-    n_centers_t = "N",         # total      - derive from database
-    n_centers_p = "N",         # planned    - from protocol
-    n_centers_c = "N",         # closed     - derive from database
-    n_centers_o = "N",         # open       - derive from database
-    n_pat_t = "default",       # target     - from protocol
-    n_pat_e = "default (300)", # enrolled   - derive from database
-    n_pat_c = "default",       # complete   - derive from database
-    n_pat_p = "default"        # prematurely terminated - derive from database
+    n_centers_t = "10",         # total      - derive from database
+    n_centers_p = "20",         # planned    - from protocol
+    n_centers_c = "0",         # closed     - derive from database
+    n_centers_o = "15",         # open       - derive from database
+    n_pat_t = "1200",          # target     - from protocol
+    n_pat_e = "300",           # enrolled   - derive from database
+    n_pat_c = "111",           # complete   - derive from database
+    n_pat_p = "10"             # prematurely terminated - derive from database
 )
 ```
 
