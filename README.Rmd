@@ -8,7 +8,7 @@ output: github_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-# `SwissASR`
+# `SwissASR` <img src='man/figures/logo.png' align="right" width="200">
 
 `r badger::badge_custom("dev version", as.character(packageVersion("SwissASR")), "blue", "https://github.com/CTU-Bern/redcaptools")`
 [![R-CMD-check](https://github.com/CTU-Bern/SwissASR/workflows/R-CMD-check/badge.svg)](https://github.com/CTU-Bern/SwissASR/actions)
