@@ -36,6 +36,8 @@
 #' asr_safety_summary(data = prepped$data, period_data = prepped$period_data, "o", 60)
 asr_safety_summary <- function(data, period_data, trial_type, n_pat_e){
 
+  n_pat_e <- as.numeric(n_pat_e)
+
   if(!attr(period_data, "asr") == "prepped") stop("has period_data been prepped by `asr_dataprep`?")
   if(!attr(data, "asr") == "prepped") stop("has data been prepped by `asr_dataprep`?")
 
