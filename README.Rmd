@@ -25,7 +25,7 @@ Provide a dataframe with the given variables and the function will return a fill
 The package can be installed from CTU Bern's package universe:
 
 ```{r gh-installation, eval = FALSE}
-install.packages('SwissASR', repos = 'https://ctu-bern.r-universe.dev')
+install.packages('SwissASR', repos = c('https://ctu-bern.r-universe.dev', 'https://cloud.r-project.org'))
 ```
 
 ### Using the package 
