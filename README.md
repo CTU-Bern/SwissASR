@@ -25,7 +25,7 @@ bodies.
 The package can be installed from CTU Bern’s package universe:
 
 ``` r
-install.packages('SwissASR', repos = 'https://ctu-bern.r-universe.dev')
+install.packages('SwissASR', repos = c('https://ctu-bern.r-universe.dev', 'https://cloud.r-project.org'))
 ```
 
 ### Using the package
