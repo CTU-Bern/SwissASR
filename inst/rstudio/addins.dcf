@@ -1,0 +1,4 @@
+Name: Add asr template
+Description: Adds a template function call for the asr function to the current file.
+Binding: asr_skeleton
+Interactive: false
