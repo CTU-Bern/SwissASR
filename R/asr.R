@@ -208,18 +208,18 @@ asr <- function(data,
                 , n_centers_p = "default" #planned
                 , n_centers_c = "default" #closed
                 , n_centers_o = "default" #open
-                , n_pat_t = "default" #target
+                , n_pat_t = 500 #target
                 , n_pat_e = 300 #enrolled
-                , n_pat_c = "default" #complete
-                , n_pat_p = "default" #prematurely terminated
+                , n_pat_c = 100 #complete
+                , n_pat_p = 15 #prematurely terminated
                 , n_centers_t_ch = "default" # total in CH
                 , n_centers_p_ch = "default" #planned in CH
                 , n_centers_c_ch = "default" #closed in CH
                 , n_centers_o_ch = "default" #open in CH
-                , n_pat_t_ch = "default" #target in CH
+                , n_pat_t_ch = 500 #target in CH
                 , n_pat_e_ch = 300 #enrolled in CH
-                , n_pat_c_ch = "default" #complete in CH
-                , n_pat_p_ch = "default" #prematurely terminated in CH
+                , n_pat_c_ch = 100 #complete in CH
+                , n_pat_p_ch = 15 #prematurely terminated in CH
                 , report_date = format(Sys.Date(), format = "%d/%m/%Y")
                 , period_from = as.Date("2020-11-02")
                 , period_to = as.Date("2020-11-17")
