@@ -31,7 +31,7 @@
 #' # medical devices
 #' prepped <- asr_dataprep(asr_sae, period_from = as.Date("2020-10-10"),
 #'                         period_to = as.Date("2021-10-10"), trial_type = "m")
-#' summ <- asr_safety_summary(data = prepped$data,
+#' asr_safety_summary(data = prepped$data,
 #'                            period_data = prepped$period_data, "m", 60,
 #'                             n_per_arm = list(grp1 = NA, grp2 = NA))
 #'
@@ -136,7 +136,7 @@ asr_safety_summary <- function(data, period_data, trial_type, n_pat_e, n_per_arm
 
 
   }
-  if(trial_type == "medical device" & all(!is.na(n_per_arm)) ){
+  if(trial_type == "medical device"){
     # FOR MEDICAL DEVICES
 
     tab <- table(period_data$sae)
@@ -273,7 +273,6 @@ asr_safety_summary <- function(data, period_data, trial_type, n_pat_e, n_per_arm
       )
 
     }else{
-
       tab <- tribble(
         ~desc, ~fatal, ~nfatal,
         # row 1
@@ -313,6 +312,13 @@ asr_safety_summary <- function(data, period_data, trial_type, n_pat_e, n_per_arm
              glue("In {sum(data$related==0 & data$class== 'SADR')} out of {sum(data$class == 'SADR')} SADRs ({sprintf('%1.1f', sum(data$related==0 & data$class== 'SADR')/sum(data$class == 'SADR')*100)} %) it cannot be excluded that the events are attributable to other factors like quality defects, contaminations, administration and preparation procedures of TrP/GT/GMO, etc."),
              glue("{sum(data$class == 'SUSAR')} Suspected Unexpected Serious Adverse Reactions (SUSARs) occurred during the reporting period."),
              glue("Other new relevant safety aspects (including details regarding exposure): "))
+
+    tab_map <- data.frame(
+      col_key = c("desc", "fatal", "nfatal", "nsadr","sadr", "susar"),
+      name = c('', 'SAEs with fatal outcome', 'Other Serious Adverse Events (non-fatal SAEs)',
+               'Non-Serious Adverse Drug Reactions, NSADRs',
+               'Serious Adverse Drug Reactions, SADRs', 'Suspected Unexpected Serious Adverse Reactions, SUSARs'),
+      stringsAsFactors = FALSE)
 
     if(all(!is.na(n_per_arm))){
 
@@ -372,13 +378,6 @@ asr_safety_summary <- function(data, period_data, trial_type, n_pat_e, n_per_arm
         sum(data$class == "SUSAR")
       )
     }
-
-    tab_map <- data.frame(
-      col_key = c("desc", "fatal", "nfatal", "nsadr","sadr", "susar"),
-      name = c('', 'SAEs with fatal outcome', 'Other Serious Adverse Events (non-fatal SAEs)',
-               'Non-Serious Adverse Drug Reactions, NSADRs',
-               'Serious Adverse Drug Reactions, SADRs', 'Suspected Unexpected Serious Adverse Reactions, SUSARs'),
-      stringsAsFactors = FALSE)
 
   }
   return(
