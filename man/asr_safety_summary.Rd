@@ -4,7 +4,7 @@
 \alias{asr_safety_summary}
 \title{Summarize safety data}
 \usage{
-asr_safety_summary(data, period_data, trial_type, n_pat_e)
+asr_safety_summary(data, period_data, trial_type, n_pat_e, n_per_arm)
 }
 \arguments{
 \item{data}{SAE data}
@@ -14,6 +14,8 @@ asr_safety_summary(data, period_data, trial_type, n_pat_e)
 \item{trial_type}{trial type (\code{imp}, \code{medical device} or \code{other})}
 
 \item{n_pat_e}{Number of enrolled participants}
+
+\item{n_per_arm}{Number of participants enrolled per arm}
 }
 \value{
 \describe{
@@ -30,16 +32,19 @@ data(asr_sae)
 # IMP
 prepped <- asr_dataprep(asr_sae,
                         period_from = as.Date("2020-10-10"),
-                        period_to = as.Date("2021-10-10"))
+                        period_to = as.Date("2021-10-10")
+                        )
 asr_safety_summary(data = prepped$data, period_data = prepped$period_data,
-                   "imp", 60)
+                   "imp", 60, n_per_arm = list(grp1 = 150, grp2 = 150))
 
 # medical devices
 prepped <- asr_dataprep(asr_sae, period_from = as.Date("2020-10-10"),
                         period_to = as.Date("2021-10-10"), trial_type = "m")
 summ <- asr_safety_summary(data = prepped$data,
-                           period_data = prepped$period_data, "m", 60)
+                           period_data = prepped$period_data, "m", 60,
+                            n_per_arm = list(grp1 = NA, grp2 = NA))
 
 # other trial
-asr_safety_summary(data = prepped$data, period_data = prepped$period_data, "o", 60)
+asr_safety_summary(data = prepped$data, period_data = prepped$period_data, "o", 60,
+ n_per_arm = list(grp1 = 150, grp2 = 150))
 }

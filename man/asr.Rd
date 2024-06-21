@@ -33,6 +33,7 @@ asr(
   n_pat_e_ch = 300,
   n_pat_c_ch = 100,
   n_pat_p_ch = 15,
+  n_per_arm = c(grp1 = 150, grp2 = 150),
   report_date = format(Sys.Date(), format = "\%d/\%m/\%Y"),
   period_from = as.Date("2020-11-02"),
   period_to = as.Date("2020-11-17"),
@@ -119,6 +120,8 @@ asr(
 \item{n_pat_c_ch}{number of completed participants in CH}
 
 \item{n_pat_p_ch}{number of prematurely terminated participants in CH}
+
+\item{n_per_arm}{number of enrolled participants per arm, list with group 1 and 2, define here the names of your groups as in the data}
 
 \item{report_date}{report date}
 
