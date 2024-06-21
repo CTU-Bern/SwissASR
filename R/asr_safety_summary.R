@@ -32,10 +32,12 @@
 #' prepped <- asr_dataprep(asr_sae, period_from = as.Date("2020-10-10"),
 #'                         period_to = as.Date("2021-10-10"), trial_type = "m")
 #' summ <- asr_safety_summary(data = prepped$data,
-#'                            period_data = prepped$period_data, "m", 60)
+#'                            period_data = prepped$period_data, "m", 60,
+#'                             n_per_arm = list(grp1 = NA, grp2 = NA))
 #'
 #' # other trial
-#' asr_safety_summary(data = prepped$data, period_data = prepped$period_data, "o", 60)
+#' asr_safety_summary(data = prepped$data, period_data = prepped$period_data, "o", 60,
+#'  n_per_arm = list(grp1 = 150, grp2 = 150))
 asr_safety_summary <- function(data, period_data, trial_type, n_pat_e, n_per_arm){
 
   n_pat_e <- as.numeric(n_pat_e)
@@ -149,19 +151,19 @@ asr_safety_summary <- function(data, period_data, trial_type, n_pat_e, n_per_arm
              glue("{sum(period_data$related)} out of {nrow(period_data)} SAEs ({sprintf('%1.1f', sum(period_data$related)/{nrow(period_data)}*100)} %) were classified ''related'' to the MD or to an intervention (procedure) undertaken in the clinical trial."),
              glue("In {sum(period_data$devattr)} of {nrow(period_data)} SAEs ({sprintf('%1.1f', sum(period_data$devattr)/nrow(period_data)*100)} %) it cannot be excluded that the events are attributable to the medical device under investigation."),
              glue("In {sum(period_data$devint)} of {nrow(period_data)} SAEs ({sprintf('%1.1f', sum(period_data$devint)/nrow(period_data)*100)} %) it cannot be excluded that the events are attributable to an intervention undertaken in the clinical trial."),
-             if(sum(period_data$sae)>0){glue("The most frequent SAEs documented were {most_freq}.")}else{glue(" ")},
+             if(sum(period_data$class=="SAE")>0){glue("The most frequent SAEs documented were {most_freq}.")}else{glue(" ")},
              glue("Occurrence of SAE in the trial arm versus control arm (if applicable)."),
-             glue("With respect to the expectedness of the event, {sum(data$expected)} ({sprintf('%1.1f', sum(period_data$expected)/nrow(period_data)*100)} %) of the SADEs were expected/anticipated and {sum(!data$expected)} ({sprintf('%1.1f', sum(!period_data$expected)/nrow(period_data)*100)} %) were classified as unexpected/unanticipated."),
+             glue("With respect to the expectedness of the event, {sum(data$expected)} ({sprintf('%1.1f', sum(period_data$expected)/nrow(period_data)*100)} %) of the SADEs were expected/anticipated and {sum(!period_data$expected)} ({sprintf('%1.1f', sum(!period_data$expected)/nrow(period_data)*100)} %) were classified as unexpected/unanticipated."),
              glue("{sum(period_data$devdef)} device deficiencies were observed (includes malfunctions, use errors, inadequacies in the information supplied by the manufacturer including labelling)."),
              if(sum(period_data$devdef)>0){glue("{sum(period_data$devdef)} out of {sum(period_data$devattr)} device deficiencies ({sprintf('%1.1f', sum(period_data$devdef)/sum(period_data$devdef)*100)} %) could have led to serious adverse events if suitable action had not been taken, intervention had not been made, or circumstances had been less fortunate (device deficiencies with a SAE potential).")}else{glue(" ")},
              glue("{sum(period_data$safetymeasure)} health hazards that required safety-related measures occurred."),
              glue("Safety and protective measures taken by the investigator/sponsor (including those requested by the ethics committee and Swissmedic and authorities abroad) taken in Switzerland and abroad: [free text]"))
 
     txt_all <- c(glue("During the reporting period, a total of {nrow(data)} serious adverse events (SAEs) have been reported."),
-             glue("{sum(data$related)} out of {nrow(data)} SAEs ({sprintf('%1.1f', sum(period_data$related)/{nrow(data)}*100)} %) were classified ''related'' to the MD or to an intervention (procedure) undertaken in the clinical trial."),
-             glue("In {sum(data$dev_attr)} of {nrow(data)} SAEs ({sprintf('%1.1f', sum(data$dev_attr)/nrow(data)*100)} %) it cannot be excluded that the events are attributable to the medical device under investigation."),
-             glue("In {sum(data$dev_int)} of {nrow(data)} SAEs ({sprintf('%1.1f', sum(data$dev_int)/nrow(data)*100)} %) it cannot be excluded that the events are attributable to an intervention undertaken in the clinical trial."),
-             if(sum(period_data$sae)>0){glue("The most frequent SAEs documented were {most_freq_all}.")}else{glue(" ")},
+             glue("{sum(data$related)} out of {nrow(data)} SAEs ({sprintf('%1.1f', sum(data$related)/{nrow(data)}*100)} %) were classified ''related'' to the MD or to an intervention (procedure) undertaken in the clinical trial."),
+             glue("In {sum(data$devattr)} of {nrow(data)} SAEs ({sprintf('%1.1f', sum(data$devattr)/nrow(data)*100)} %) it cannot be excluded that the events are attributable to the medical device under investigation."),
+             glue("In {sum(data$devint)} of {nrow(data)} SAEs ({sprintf('%1.1f', sum(data$devint)/nrow(data)*100)} %) it cannot be excluded that the events are attributable to an intervention undertaken in the clinical trial."),
+             if(sum(data$class=="SAE")>0){glue("The most frequent SAEs documented were {most_freq_all}.")}else{glue(" ")},
              glue("Occurrence of SAE in the trial arm versus control arm (if applicable)."),
              glue("With respect to the expectedness of the event, {sum(data$expected)} ({sprintf('%1.1f', sum(data$expected)/nrow(data)*100)} %) of the SADEs were expected/anticipated and {sum(!data$expected)} ({sprintf('%1.1f', sum(!data$expected)/nrow(data)*100)} %) were classified as unexpected/unanticipated."),
              glue("{sum(data$devdef)} device deficiencies were observed (includes malfunctions, use errors, inadequacies in the information supplied by the manufacturer including labelling)."),
@@ -169,6 +171,12 @@ asr_safety_summary <- function(data, period_data, trial_type, n_pat_e, n_per_arm
              glue("{sum(data$safetymeasure)} health hazards that required safety-related measures occurred."),
              glue("Safety and protective measures taken by the investigator/sponsor (including those requested by the ethics committee and Swissmedic and authorities abroad) taken in Switzerland and abroad: [free text]"))
 
+    tab_map <- data.frame(
+      col_key = c("desc", "sade","fatal", "sae"),
+      name = c('MD/IVD Device', 'Serious Adverse Device Effects SADE',
+               'Device Deficiencies that could have led to an SAE (serious deficiencies)',
+               'Safety and protective measures taken in Switzerland and abroad.'),
+      stringsAsFactors = FALSE)
 
     if(all(!is.na(n_per_arm))){
 
@@ -216,17 +224,10 @@ asr_safety_summary <- function(data, period_data, trial_type, n_pat_e, n_per_arm
       )
     }
 
-    tab_map <- data.frame(
-      col_key = c("desc", "sade","fatal", "sae"),
-      name = c('MD/IVD Device', 'Serious Adverse Device Effects SADE',
-               'Device Deficiencies that could have led to an SAE (serious deficiencies)',
-               'Safety and protective measures taken in Switzerland and abroad.'),
-      stringsAsFactors = FALSE)
-
   }
   if(trial_type == "other"){
     # FOR OTHER TRIALS
-    tab <- table(data$sae)
+    tab <- table(period_data$sae[period_data$related == TRUE])
     tab <- sort(tab, decreasing = TRUE)[1:3]
     most_freq <- paste0(names(tab), " (", tab, ")", collapse = ", ")
 
@@ -240,13 +241,19 @@ asr_safety_summary <- function(data, period_data, trial_type, n_pat_e, n_per_arm
     txt_all <- c(glue("Since the beginning of the study, {length(unique(data$record_id))} of {n_pat_e} participants ({sprintf('%1.1f', length(unique(data$record_id))/n_pat_e*100)} %) reported a total of {nrow(data)} serious adverse events (SAEs) with possible relationship to the study intervention)."),
                if(sum(data$related)>0){glue("The most frequent documented SAEs with possible relationship to the intervention were {most_freq}.")}else{glue(" ")})
 
+    tab_map <- data.frame(
+      col_key = c("desc", "fatal", "sae"),
+      name = c('Other clinical trial', 'SAEs with fatal outcome where a causality to the intervention cannot be excluded',
+               'Other SAEs where a causality to the intervention cannot be excluded'),
+      stringsAsFactors = FALSE)
+
     if(all(!is.na(n_per_arm))){
 
       ### define the values for the two interventional groups
       grp <- names(n_per_arm)
 
       tab <- tribble(
-        ~desc, ~fatal, ~sae, ~sadr, ~susar,
+        ~desc, ~fatal, ~nfatal,
         # row 1
         'Number of cases (during reporting period)',
         paste0("N = ", sum(period_data$outcome == "Fatal" & period_data$related==1),
@@ -268,7 +275,7 @@ asr_safety_summary <- function(data, period_data, trial_type, n_pat_e, n_per_arm
     }else{
 
       tab <- tribble(
-        ~desc, ~fatal, ~sae,
+        ~desc, ~fatal, ~nfatal,
         # row 1
         'Number of cases (during reporting period)',
         sum(period_data$outcome == "Fatal" & period_data$related==1),
@@ -279,13 +286,6 @@ asr_safety_summary <- function(data, period_data, trial_type, n_pat_e, n_per_arm
         sum(data$outcome != "Fatal" & data$related==1),
       )
     }
-
-
-    tab_map <- data.frame(
-      col_key = c("desc", "fatal", "sae"),
-      name = c('Other clinical trial', 'SAEs with fatal outcome where a causality to the intervention cannot be excluded',
-               'Other SAEs where a causality to the intervention cannot be excluded'),
-      stringsAsFactors = FALSE)
 
   }
   if(trial_type == "trp"){
