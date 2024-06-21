@@ -23,7 +23,8 @@
 #' # IMP
 #' prepped <- asr_dataprep(asr_sae,
 #'                         period_from = as.Date("2020-10-10"),
-#'                         period_to = as.Date("2021-10-10"))
+#'                         period_to = as.Date("2021-10-10"),
+#'                         n_per_arm = list(grp1 = 150, grp2 = 150))
 #' asr_safety_summary(data = prepped$data, period_data = prepped$period_data,
 #'                    "imp", 60)
 #'
