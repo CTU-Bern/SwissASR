@@ -96,6 +96,7 @@
 #' @param n_pat_e_ch number of enrolled participants in CH
 #' @param n_pat_c_ch number of completed participants in CH
 #' @param n_pat_p_ch number of prematurely terminated participants in CH
+#' @param n_per_arm number of enrolled participants per arm, list with group 1 and 2, define here the names of your groups as in the data
 #' @param report_date report date
 #' @param period_from start of reporting period
 #' @param period_to end of reporting period
@@ -220,6 +221,7 @@ asr <- function(data,
                 , n_pat_e_ch = 300 #enrolled in CH
                 , n_pat_c_ch = 100 #complete in CH
                 , n_pat_p_ch = 15 #prematurely terminated in CH
+                , n_per_arm = c(grp1 = 150, grp2 = 150) #number of patients per arm, use NA if study is blinded
                 , report_date = format(Sys.Date(), format = "%d/%m/%Y")
                 , period_from = as.Date("2020-11-02")
                 , period_to = as.Date("2020-11-17")
@@ -458,14 +460,14 @@ asr <- function(data,
                                   inst_name_address = get("inst_name_address"),
                                   report_date = get("report_date"),
                                   period = get("period"),
-                                  n_centers_t = get("n_centers_t"),
-                                  n_centers_p = get("n_centers_p"),
-                                  n_centers_c = get("n_centers_c"),
-                                  n_centers_o = get("n_centers_o"),
-                                  n_centers_t_ch = get("n_centers_t_ch"),
-                                  n_centers_p_ch = get("n_centers_p_ch"),
-                                  n_centers_c_ch = get("n_centers_c_ch"),
-                                  n_centers_o_ch = get("n_centers_o_ch"),
+                                  n_centers_t = as.character(get("n_centers_t")),
+                                  n_centers_p = as.character(get("n_centers_p")),
+                                  n_centers_c = as.character(get("n_centers_c")),
+                                  n_centers_o = as.character(get("n_centers_o")),
+                                  n_centers_t_ch = as.character(get("n_centers_t_ch")),
+                                  n_centers_p_ch = as.character(get("n_centers_p_ch")),
+                                  n_centers_c_ch = as.character(get("n_centers_c_ch")),
+                                  n_centers_o_ch = as.character(get("n_centers_o_ch")),
                                   n_pat_t = as.character(n_pat_t),
                                   n_pat_e = as.character(n_pat_e),
                                   n_pat_c = as.character(n_pat_c),
@@ -480,7 +482,8 @@ asr <- function(data,
   summ <- asr_safety_summary(data = data,
                              period_data = period_data,
                              trial_type = trial_type,
-                             n_pat_e = n_pat_e)
+                             n_pat_e = n_pat_e,
+                             n_per_arm = n_per_arm)
 
   # doc <- doc %>%
   #   cursor_bookmark("partsafety_text")
@@ -491,6 +494,9 @@ asr <- function(data,
 
   doc <- doc %>%
     officer::set_doc_properties(partsafety_text = paste0(summ$txt, collapse = " ") )
+
+  doc <- doc %>%
+    officer::set_doc_properties(partsafety_text_all = paste0(summ$txt_all, collapse = " ") )
 
   ft <- summ$tab %>%
     flextable() %>%
@@ -505,7 +511,6 @@ asr <- function(data,
   doc <- doc %>%
     cursor_bookmark("partsafety_tab") %>%
     body_add_flextable(ft)
-
 
 
 
