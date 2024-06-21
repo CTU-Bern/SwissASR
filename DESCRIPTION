@@ -1,6 +1,6 @@
 Package: SwissASR
 Title: Automated Completion of the SwissEthics Annual Safety Report
-Version: 0.4.0
+Version: 0.4.1
 Authors@R: 
     c(person(given = "Alan G.",
            family = "Haynes",
