@@ -3,7 +3,7 @@
 
 # `SwissASR` <img src='man/figures/logo.png' align="right" width="200">
 
-[![](https://img.shields.io/badge/dev%20version-0.4.0-blue.svg)](https://github.com/CTU-Bern/redcaptools)
+[![](https://img.shields.io/badge/dev%20version-0.4.1-blue.svg)](https://github.com/CTU-Bern/redcaptools)
 [![R-CMD-check](https://github.com/CTU-Bern/SwissASR/workflows/R-CMD-check/badge.svg)](https://github.com/CTU-Bern/SwissASR/actions)
 
 Participant safety is a big issue in clinical trials and reporting
@@ -25,7 +25,7 @@ bodies.
 The package can be installed from CTU Bern’s package universe:
 
 ``` r
-install.packages('SwissASR', repos = 'https://ctu-bern.r-universe.dev')
+install.packages('SwissASR', repos = c('https://ctu-bern.r-universe.dev', 'https://cloud.r-project.org'))
 ```
 
 ### Using the package
