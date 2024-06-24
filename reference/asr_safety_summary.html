@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">SwissASR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.4.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.5.0</span>
       </span>
     </div>
 
@@ -47,7 +47,7 @@
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">asr_safety_summary</span><span class="op">(</span><span class="va">data</span>, <span class="va">period_data</span>, <span class="va">trial_type</span>, <span class="va">n_pat_e</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">asr_safety_summary</span><span class="op">(</span><span class="va">data</span>, <span class="va">period_data</span>, <span class="va">trial_type</span>, <span class="va">n_pat_e</span>, <span class="va">n_per_arm</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -66,6 +66,10 @@
 
 <dt>n_pat_e</dt>
 <dd><p>Number of enrolled participants</p></dd>
+
+
+<dt>n_per_arm</dt>
+<dd><p>Number of participants enrolled per arm</p></dd>
 
 </dl></div>
     <div id="value">
@@ -90,20 +94,28 @@
 <span class="r-in"><span><span class="co"># IMP</span></span></span>
 <span class="r-in"><span><span class="va">prepped</span> <span class="op">&lt;-</span> <span class="fu"><a href="asr_dataprep.html">asr_dataprep</a></span><span class="op">(</span><span class="va">asr_sae</span>,</span></span>
 <span class="r-in"><span>                        period_from <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/as.Date.html" class="external-link">as.Date</a></span><span class="op">(</span><span class="st">"2020-10-10"</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>                        period_to <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/as.Date.html" class="external-link">as.Date</a></span><span class="op">(</span><span class="st">"2021-10-10"</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span>                        period_to <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/as.Date.html" class="external-link">as.Date</a></span><span class="op">(</span><span class="st">"2021-10-10"</span><span class="op">)</span></span></span>
+<span class="r-in"><span>                        <span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu">asr_safety_summary</span><span class="op">(</span>data <span class="op">=</span> <span class="va">prepped</span><span class="op">$</span><span class="va">data</span>, period_data <span class="op">=</span> <span class="va">prepped</span><span class="op">$</span><span class="va">period_data</span>,</span></span>
-<span class="r-in"><span>                   <span class="st">"imp"</span>, <span class="fl">60</span><span class="op">)</span></span></span>
+<span class="r-in"><span>                   <span class="st">"imp"</span>, <span class="fl">60</span>, n_per_arm <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>grp1 <span class="op">=</span> <span class="fl">150</span>, grp2 <span class="op">=</span> <span class="fl">150</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $txt</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "During the reporting period, 20 of 60 participants (33.3 %) reported a total of 20 serious adverse events (SAEs)."                                                        </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [2] "5 of 20 SAEs (25.0 %) were classified 'related' to the IMP. The most frequent related SAEs documented were poor sleep (2), spontaneous unconsciousness (2), headache (1)."</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [3] "6 Suspected Unexpected Serious Adverse Reactions (SUSARs) occurred during the reporting period, which have been notified to the Swiss competent authorities."             </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "During the reporting period, 20 of 60 participants (33.3 %) reported a total of 20 serious adverse events (SAEs)."                                           </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [2] "5 of 20 SAEs (25.0 %) were classified 'related' to the IMP."                                                                                                 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [3] "Most frequent related SAEs (i.e., SADR.) documented were poor sleep (2), spontaneous unconsciousness (2), headache (1)."                                     </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [4] "6 Suspected Unexpected Serious Adverse Reactions (SUSARs) occurred during the reporting period, which have been notified to the Swiss competent authorities."</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $txt_all</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Since the beginning of the study, 20 of 60 participants (33.3 %) reported a total of 20 serious adverse events (SAEs)."                                      </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [2] "5 of 20 SAEs (25.0 %) were classified 'related' to the IMP."                                                                                                 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [3] "Most frequent related SAEs (i.e., SADR.) documented were poor sleep (2), spontaneous unconsciousness (2), headache (1)."                                     </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [4] "6 Suspected Unexpected Serious Adverse Reactions (SUSARs) occurred during the reporting period, which have been notified to the Swiss competent authorities."</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $tab</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 2 × 5</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   desc                                                   fatal   sae  sadr susar</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                                                  <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> Number of cases (during reporting period)                  0    20     5     6</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> Number of cases (cumulative) since the start of the c…     3    20     5     6</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   desc                                                   fatal sae   sadr  susar</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                                                  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> Number of cases (during reporting period)              N = … N = … N = … N = …</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> Number of cases (cumulative) since the start of the c… N = … N = … N = … N = …</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $tab_map</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   col_key</span>
@@ -113,9 +125,9 @@
 <span class="r-out co"><span class="r-pr">#&gt;</span> 4    sadr</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 5   susar</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                                                                     name</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1                                                                       </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2                                                            Fatal cases</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3                                           Serious Adverse Events, SAEs</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1                                                                    IMP</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2                       Serious Adverse Events, SAEs, with fatal outcome</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3                           Other Serious Adverse Events, non-fatal SAEs</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 4                  Serious Adverse Drug Reactions, SADRs (only for IMPs)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 5 Suspected Unexpected Serious Adverse Reactions, SUSARs (only for IMPs)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
@@ -123,27 +135,120 @@
 <span class="r-in"><span><span class="co"># medical devices</span></span></span>
 <span class="r-in"><span><span class="va">prepped</span> <span class="op">&lt;-</span> <span class="fu"><a href="asr_dataprep.html">asr_dataprep</a></span><span class="op">(</span><span class="va">asr_sae</span>, period_from <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/as.Date.html" class="external-link">as.Date</a></span><span class="op">(</span><span class="st">"2020-10-10"</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>                        period_to <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/as.Date.html" class="external-link">as.Date</a></span><span class="op">(</span><span class="st">"2021-10-10"</span><span class="op">)</span>, trial_type <span class="op">=</span> <span class="st">"m"</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">summ</span> <span class="op">&lt;-</span> <span class="fu">asr_safety_summary</span><span class="op">(</span>data <span class="op">=</span> <span class="va">prepped</span><span class="op">$</span><span class="va">data</span>,</span></span>
-<span class="r-in"><span>                           period_data <span class="op">=</span> <span class="va">prepped</span><span class="op">$</span><span class="va">period_data</span>, <span class="st">"m"</span>, <span class="fl">60</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">asr_safety_summary</span><span class="op">(</span>data <span class="op">=</span> <span class="va">prepped</span><span class="op">$</span><span class="va">data</span>,</span></span>
+<span class="r-in"><span>                           period_data <span class="op">=</span> <span class="va">prepped</span><span class="op">$</span><span class="va">period_data</span>, <span class="st">"m"</span>, <span class="fl">60</span>,</span></span>
+<span class="r-in"><span>                            n_per_arm <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>grp1 <span class="op">=</span> <span class="cn">NA</span>, grp2 <span class="op">=</span> <span class="cn">NA</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $txt</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [1] "During the reporting period, a total of 20 serious adverse events (SAEs) have been reported."                                                                                                                                                   </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [2] "5 out of 20 SAEs (25.0 %) were classified ''related'' to the MD or to an intervention (procedure) undertaken in the clinical trial."                                                                                                            </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [3] "In 11 of 20 SAEs (55.0 %) it cannot be excluded that the events are attributable to the medical device under investigation."                                                                                                                    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [4] "In 7 of 20 SAEs (35.0 %) it cannot be excluded that the events are attributable to an intervention undertaken in the clinical trial."                                                                                                           </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [5] "The most frequent SAEs documented were spontaneous unconsciousness (7), headache (5), poor sleep (4)."                                                                                                                                          </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [6] "Occurrence of SAE in the trial arm versus control arm (if applicable)."                                                                                                                                                                         </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [7] "With respect to the expectedness of the event, 7 (35.0 %) of the SADEs were expected/anticipated and 13 (65.0 %) were classified as unexpected/unanticipated."                                                                                  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [8] "11 device deficiencies were observed (includes malfunctions, use errors, inadequacies in the information supplied by the manufacturer including labelling)."                                                                                    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [9] "11 out of 11 device deficiencies (100.0 %) could have led to serious adverse events if suitable action had not been taken, intervention had not been made, or circumstances had been less fortunate (device deficiencies with a SAE potential)."</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [10] "12 health hazards that required safety-related measures occurred."                                                                                                                                                                              </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [11] "Safety and protective measures taken by the investigator/sponsor (including those requested by the ethics committee and Swissmedic and authorities abroad) taken in Switzerland and abroad: [free text]"                                        </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $txt_all</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [1] "During the reporting period, a total of 20 serious adverse events (SAEs) have been reported."                                                                                                                                                   </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [2] "5 out of 20 SAEs (25.0 %) were classified ''related'' to the MD or to an intervention (procedure) undertaken in the clinical trial."                                                                                                            </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [3] "In 11 of 20 SAEs (55.0 %) it cannot be excluded that the events are attributable to the medical device under investigation."                                                                                                                    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [4] "In 7 of 20 SAEs (35.0 %) it cannot be excluded that the events are attributable to an intervention undertaken in the clinical trial."                                                                                                           </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [5] "The most frequent SAEs documented were spontaneous unconsciousness (7), headache (5), poor sleep (4)."                                                                                                                                          </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [6] "Occurrence of SAE in the trial arm versus control arm (if applicable)."                                                                                                                                                                         </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [7] "With respect to the expectedness of the event, 7 (35.0 %) of the SADEs were expected/anticipated and 13 (65.0 %) were classified as unexpected/unanticipated."                                                                                  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [8] "11 device deficiencies were observed (includes malfunctions, use errors, inadequacies in the information supplied by the manufacturer including labelling)."                                                                                    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [9] "11 out of 11 device deficiencies (100.0 %) could have led to serious adverse events if suitable action had not been taken, intervention had not been made, or circumstances had been less fortunate (device deficiencies with a SAE potential)."</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [10] "12 health hazards that required safety-related measures occurred."                                                                                                                                                                              </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [11] "Safety and protective measures taken by the investigator/sponsor (including those requested by the ethics committee and Swissmedic and authorities abroad) taken in Switzerland and abroad: [free text]"                                        </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $tab</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 2 × 4</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   desc                                                       sade  attr measures</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                                                     <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> Number of cases (during reporting period)                     0    11       12</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> Number of cases (cumulative) since the start of the clin…     0    11       12</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $tab_map</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   col_key</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1    desc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2    sade</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3   fatal</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4     sae</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                                                                       name</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1                                                            MD/IVD Device</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2                                      Serious Adverse Device Effects SADE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3 Device Deficiencies that could have led to an SAE (serious deficiencies)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4          Safety and protective measures taken in Switzerland and abroad.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># other trial</span></span></span>
-<span class="r-in"><span><span class="fu">asr_safety_summary</span><span class="op">(</span>data <span class="op">=</span> <span class="va">prepped</span><span class="op">$</span><span class="va">data</span>, period_data <span class="op">=</span> <span class="va">prepped</span><span class="op">$</span><span class="va">period_data</span>, <span class="st">"o"</span>, <span class="fl">60</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">asr_safety_summary</span><span class="op">(</span>data <span class="op">=</span> <span class="va">prepped</span><span class="op">$</span><span class="va">data</span>, period_data <span class="op">=</span> <span class="va">prepped</span><span class="op">$</span><span class="va">period_data</span>, <span class="st">"o"</span>, <span class="fl">60</span>,</span></span>
+<span class="r-in"><span> n_per_arm <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>grp1 <span class="op">=</span> <span class="fl">150</span>, grp2 <span class="op">=</span> <span class="fl">150</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $txt</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "During the reporting period, 20 of 60 participants (33.3 %) reported a total of 20 serious adverse events (SAEs; with possible relationship to the intervention)."</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [2] "The most frequent SAEs documented were spontaneous unconsciousness (7), headache (5), poor sleep (4)."                                                            </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "During the reporting period, 20 of 60 participants (33.3 %) reported a total of 20 serious adverse events (SAEs) with possible relationship to the study intervention)."</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [2] "The most frequent documented SAEs with possible relationship to the intervention were poor sleep (2), spontaneous unconsciousness (2), headache (1)."                   </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $txt_all</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Since the beginning of the study, 20 of 60 participants (33.3 %) reported a total of 20 serious adverse events (SAEs) with possible relationship to the study intervention)."</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [2] "The most frequent documented SAEs with possible relationship to the intervention were poor sleep (2), spontaneous unconsciousness (2), headache (1)."                        </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $tab</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 2 × 3</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   desc                                                               fatal   sae</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                                                              <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> Number of cases (during reporting period)                              0    20</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> Number of cases (cumulative) since the start of the clinical trial     3    20</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   desc                                                              fatal nfatal</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                                                             <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> Number of cases (during reporting period)                         N = … N = 5…</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> Number of cases (cumulative) since the start of the clinical tri… N = … N = 4…</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $tab_map</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   col_key                         name</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1    desc                             </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2   fatal                  Fatal cases</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3     sae Serious Adverse Events, SAEs</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   col_key</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1    desc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2   fatal</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3     sae</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                                                                               name</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1                                                             Other clinical trial</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2 SAEs with fatal outcome where a causality to the intervention cannot be excluded</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3              Other SAEs where a causality to the intervention cannot be excluded</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># tpr trial</span></span></span>
+<span class="r-in"><span><span class="fu">asr_safety_summary</span><span class="op">(</span>data <span class="op">=</span> <span class="va">prepped</span><span class="op">$</span><span class="va">data</span>, period_data <span class="op">=</span> <span class="va">prepped</span><span class="op">$</span><span class="va">period_data</span>, <span class="st">"t"</span>, <span class="fl">60</span>,</span></span>
+<span class="r-in"><span> n_per_arm <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>grp1 <span class="op">=</span> <span class="fl">150</span>, grp2 <span class="op">=</span> <span class="fl">150</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $txt</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "During the reporting period, a total of 20 Serious Adverse Events (SAEs) occurred."                                                                                                                      </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [2] "5 of 20 SAEs (25.0 %) were classified as Serious Adverse Drug Reaction (SADR) i.e., serious adverse events with possible relationship to the TrP/GT/GMO administered."                                   </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [3] "The most frequent SADR documented were spontaneous unconsciousness (7), headache (5), poor sleep (4)."                                                                                                   </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [4] "In 1 out of 5 SADRs (20.0 %) it cannot be excluded that the events are attributable to the TrP/GT/GMO itself."                                                                                           </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [5] "In 4 out of 5 SADRs (80.0 %) it cannot be excluded that the events are attributable to other factors like quality defects, contaminations, administration and preparation procedures of TrP/GT/GMO, etc."</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [6] "6 Suspected Unexpected Serious Adverse Reactions (SUSARs) occurred during the reporting period."                                                                                                         </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [7] "Other new relevant safety aspects (including details regarding exposure): "                                                                                                                              </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $txt_all</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Since the beginning of the study, a total of 20 Serious Adverse Events (SAEs) occurred."                                                                                                                 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [2] "5 of 20 SAEs (25.0 %) were classified as Serious Adverse Drug Reaction (SADR) i.e., serious adverse events with possible relationship to the TrP/GT/GMO administered."                                   </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [3] "The most frequent SADR documented were spontaneous unconsciousness (7), headache (5), poor sleep (4)."                                                                                                   </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [4] "In 1 out of 5 SADRs (20.0 %) it cannot be excluded that the events are attributable to the TrP/GT/GMO itself."                                                                                           </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [5] "In 4 out of 5 SADRs (80.0 %) it cannot be excluded that the events are attributable to other factors like quality defects, contaminations, administration and preparation procedures of TrP/GT/GMO, etc."</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [6] "6 Suspected Unexpected Serious Adverse Reactions (SUSARs) occurred during the reporting period."                                                                                                         </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [7] "Other new relevant safety aspects (including details regarding exposure): "                                                                                                                              </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $tab</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 2 × 6</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   desc                                            fatal nfatal nsadr sadr  susar</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                                           <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> Number of cases (during reporting period)       N = … N = 5… N = … N = … N = …</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> Number of cases (cumulative) since the start o… N = … N = 1… N = … N = … N = …</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $tab_map</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   col_key                                                   name</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1    desc                                                       </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2   fatal                                SAEs with fatal outcome</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3  nfatal          Other Serious Adverse Events (non-fatal SAEs)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4   nsadr             Non-Serious Adverse Drug Reactions, NSADRs</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5    sadr                  Serious Adverse Drug Reactions, SADRs</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6   susar Suspected Unexpected Serious Adverse Reactions, SUSARs</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 </code></pre></div>
     </div>
@@ -155,7 +260,7 @@
 
 
       <footer><div class="copyright">
-  <p></p><p>Developed by Alan G. Haynes.</p>
+  <p></p><p>Developed by Alan G. Haynes, Mattia Branca.</p>
 </div>
 
 <div class="pkgdown">

@@ -40,7 +40,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">SwissASR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.4.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.5.0</span>
       </span>
     </div>
 
@@ -69,7 +69,7 @@
 <div class="page-header"><h1 id="swissasr-">
 <code>SwissASR</code> <img src="reference/figures/logo.png" align="right" width="200"><a class="anchor" aria-label="anchor" href="#swissasr-"></a>
 </h1></div>
-<p><a href="https://github.com/CTU-Bern/redcaptools" class="external-link"><img src="https://img.shields.io/badge/dev%20version-0.4.1-blue.svg"></a> <a href="https://github.com/CTU-Bern/SwissASR/actions" class="external-link"><img src="https://github.com/CTU-Bern/SwissASR/workflows/R-CMD-check/badge.svg" alt="R-CMD-check"></a></p>
+<p><a href="https://github.com/CTU-Bern/redcaptools" class="external-link"><img src="https://img.shields.io/badge/dev%20version-0.5.0-blue.svg"></a> <a href="https://github.com/CTU-Bern/SwissASR/actions" class="external-link"><img src="https://github.com/CTU-Bern/SwissASR/workflows/R-CMD-check/badge.svg" alt="R-CMD-check"></a></p>
 <p>Participant safety is a big issue in clinical trials and reporting safety related events to the authorities is mandatory for certain trial types. One aspect of this is the annual safety report (ASR) which contains both summary information and listings of safety events. The <code>SwissASR</code> R package helps in compiling this report.</p>
 <p>Provide a dataframe with the given variables and the function will return a filled out (as far as possible - some things require PI input) ASR in MS Word format. This could then be forwarded to the PI for supplemental details, signing and submission to the relevant governing bodies.</p>
 <div class="section level2">
@@ -92,7 +92,8 @@
 <p>Assuming your dataframe is called <code>sae_data</code>, then the function could be used as follows for the IMP. This will create a file called <code>tmp.docx</code> in your working directory (the filename is controllable via the <code>target</code> option).</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="reference/asr.html">asr</a></span><span class="op">(</span><span class="va">sae_data</span><span class="op">)</span></span></code></pre></div>
-<p>Default values are then used for most parameters, which is not ideal. It is more likely desirable to enter various additional information:</p>
+<p>Default values are then used for most parameters, which is not ideal. Changing the default settings will in practice be required for every study. SwissASR includes an RStudio addin for a skeleton call, including annotations. Use it from the addins menu: <img src="reference/figures/SwissASR_addin.png"></p>
+<p>An example call might look as follows:</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="reference/asr.html">asr</a></span><span class="op">(</span><span class="va">data</span>,</span>
 <span>    target <span class="op">=</span> <span class="fu">glue</span><span class="op">(</span><span class="st">"asr_{sys.Date()}.docx"</span><span class="op">)</span>,</span>
@@ -105,14 +106,14 @@
 <span>    product_name <span class="op">=</span> <span class="st">"Example product"</span>, </span>
 <span>    sponsor_contact <span class="op">=</span> <span class="st">"Prof. Dr. Example"</span>, </span>
 <span>    inst_name_address <span class="op">=</span> <span class="st">"Example institute, Example street, Example City"</span>, </span>
-<span>    n_centers_t <span class="op">=</span> <span class="st">"N"</span>,         <span class="co"># total      - derive from database</span></span>
-<span>    n_centers_p <span class="op">=</span> <span class="st">"N"</span>,         <span class="co"># planned    - from protocol</span></span>
-<span>    n_centers_c <span class="op">=</span> <span class="st">"N"</span>,         <span class="co"># closed     - derive from database</span></span>
-<span>    n_centers_o <span class="op">=</span> <span class="st">"N"</span>,         <span class="co"># open       - derive from database</span></span>
-<span>    n_pat_t <span class="op">=</span> <span class="st">"default"</span>,       <span class="co"># target     - from protocol</span></span>
-<span>    n_pat_e <span class="op">=</span> <span class="st">"default (300)"</span>, <span class="co"># enrolled   - derive from database</span></span>
-<span>    n_pat_c <span class="op">=</span> <span class="st">"default"</span>,       <span class="co"># complete   - derive from database</span></span>
-<span>    n_pat_p <span class="op">=</span> <span class="st">"default"</span>        <span class="co"># prematurely terminated - derive from database</span></span>
+<span>    n_centers_t <span class="op">=</span> <span class="st">"10"</span>,         <span class="co"># total      - derive from database</span></span>
+<span>    n_centers_p <span class="op">=</span> <span class="st">"20"</span>,         <span class="co"># planned    - from protocol</span></span>
+<span>    n_centers_c <span class="op">=</span> <span class="st">"0"</span>,         <span class="co"># closed     - derive from database</span></span>
+<span>    n_centers_o <span class="op">=</span> <span class="st">"15"</span>,         <span class="co"># open       - derive from database</span></span>
+<span>    n_pat_t <span class="op">=</span> <span class="st">"1200"</span>,          <span class="co"># target     - from protocol</span></span>
+<span>    n_pat_e <span class="op">=</span> <span class="st">"300"</span>,           <span class="co"># enrolled   - derive from database</span></span>
+<span>    n_pat_c <span class="op">=</span> <span class="st">"111"</span>,           <span class="co"># complete   - derive from database</span></span>
+<span>    n_pat_p <span class="op">=</span> <span class="st">"10"</span>             <span class="co"># prematurely terminated - derive from database</span></span>
 <span><span class="op">)</span></span></code></pre></div>
 <p>It is envisaged that a script be written relatively early in the trial (before the first ASR is due) with the relevant fixed data (everything that cannot be derived from the database) and the other elements can be passed in once derived from the database. The safety data is then used to compile the tables and listings. The script can then be run each year to generate the ASR.</p>
 </div>
@@ -141,7 +142,7 @@
 <h2 data-toc-skip>Developers</h2>
 <ul class="list-unstyled">
 <li>Alan G. Haynes <br><small class="roles"> Author, maintainer </small> <a href="https://orcid.org/0000-0003-1374-081X" target="orcid.widget" aria-label="ORCID" class="external-link"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a> </li>
-<li><a href="authors.html">More about authors...</a></li>
+<li>Mattia Branca <br><small class="roles"> Author </small> <a href="https://orcid.org/0000-0002-8063-7882" target="orcid.widget" aria-label="ORCID" class="external-link"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a> </li>
 </ul>
 </div>
 
@@ -153,7 +154,7 @@
 
       <footer><div class="copyright">
   <p></p>
-<p>Developed by Alan G. Haynes.</p>
+<p>Developed by Alan G. Haynes, Mattia Branca.</p>
 </div>
 
 <div class="pkgdown">
