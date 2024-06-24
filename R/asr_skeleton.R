@@ -71,8 +71,8 @@ asr_skeleton <- function(){
   }) |>
     paste(collapse = ", \n    ")
 
-  context <- getSourceEditorContext()
+  context <- rstudioapi:::getSourceEditorContext()
   id <- context$id
-  insertText(text = paste0("asr(\n    ", args, "\n)"), id = id)
+  rstudioapi:::insertText(text = paste0("asr(\n    ", args, "\n)"), id = id)
 
 }
