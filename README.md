@@ -3,7 +3,7 @@
 
 # `SwissASR` <img src='man/figures/logo.png' align="right" width="200">
 
-[![](https://img.shields.io/badge/dev%20version-0.4.1-blue.svg)](https://github.com/CTU-Bern/redcaptools)
+[![](https://img.shields.io/badge/dev%20version-0.5.0-blue.svg)](https://github.com/CTU-Bern/redcaptools)
 [![R-CMD-check](https://github.com/CTU-Bern/SwissASR/workflows/R-CMD-check/badge.svg)](https://github.com/CTU-Bern/SwissASR/actions)
 
 Participant safety is a big issue in clinical trials and reporting
@@ -49,8 +49,13 @@ option).
 asr(sae_data)
 ```
 
-Default values are then used for most parameters, which is not ideal. It
-is more likely desirable to enter various additional information:
+Default values are then used for most parameters, which is not ideal.
+Changing the default settings will in practice be required for every
+study. SwissASR includes an RStudio addin for a skeleton call, including
+annotations. Use it from the addins menu:
+![](man/figures/SwissASR_addin.png)
+
+An example call might look as follows:
 
 ``` r
 asr(data,
@@ -64,14 +69,14 @@ asr(data,
     product_name = "Example product", 
     sponsor_contact = "Prof. Dr. Example", 
     inst_name_address = "Example institute, Example street, Example City", 
-    n_centers_t = "N",         # total      - derive from database
-    n_centers_p = "N",         # planned    - from protocol
-    n_centers_c = "N",         # closed     - derive from database
-    n_centers_o = "N",         # open       - derive from database
-    n_pat_t = "default",       # target     - from protocol
-    n_pat_e = "default (300)", # enrolled   - derive from database
-    n_pat_c = "default",       # complete   - derive from database
-    n_pat_p = "default"        # prematurely terminated - derive from database
+    n_centers_t = "10",         # total      - derive from database
+    n_centers_p = "20",         # planned    - from protocol
+    n_centers_c = "0",         # closed     - derive from database
+    n_centers_o = "15",         # open       - derive from database
+    n_pat_t = "1200",          # target     - from protocol
+    n_pat_e = "300",           # enrolled   - derive from database
+    n_pat_c = "111",           # complete   - derive from database
+    n_pat_p = "10"             # prematurely terminated - derive from database
 )
 ```
 
