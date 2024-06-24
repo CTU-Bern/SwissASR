@@ -1,64 +1,3 @@
-
-
-#
-#
-# wdfile <- system.file("extdata/clino_annual_safety_report_bm.docx", package = "CTUtemplate")
-#
-#
-# trial_title <- "My trial name"
-# protocol_number <- "v1399"
-# basec_number <- "whatever it is"
-# snctp_number <- "SNCTP"
-# swissmedic_number <- "SM number"
-# ec_name <- "KEK Bern"
-# product_name <- "my drug"
-# sponsor_contact <- "Me, My number, me@email.com"
-# inst_name_address <- "me, my address"
-# n_centers_t <- 20 # total
-# n_centers_p <- 30 #planned
-# n_centers_c <- 0 #closed
-# n_centers_o <- 20 #open
-# n_pat_t <- 16000 #target
-# n_pat_e <- 4956 #enrolled
-# n_pat_c <- 3678 #complete
-# n_pat_p <- 21 #prematurely terminated
-#
-#
-# last_report <- as.Date("2020-11-01")
-#
-# var_class <- "class" #sae/sadr/susar
-# var_sae_n <- "sae_n" #sae ID
-# var_part_id <- "record_id" #participant ID
-# var_age <- "age"
-# var_sex <-"sex"
-# var_country <- "country"
-# var_site <- "site"
-# var_sae <- "sae"
-# var_date_onset <- "sae_date"
-# var_date_trt_start <- "sae_trtstart"
-# var_date_trt_start <- "sae_trtstop"
-# var_outcome <- "outcome"
-# var_comment <- "comment"
-#
-#
-# report_date <- format(Sys.Date(), format = "%d/%m/%Y")
-# period_from <- "start_date"
-# period_to <- "to_date"
-#
-#
-#
-#
-#
-# # prepare table specific variables
-#
-#
-# asr(sae_data)
-# asr(sae_data, var_class = "sae_type")
-#
-# with(sae_data, asr(class = sae_type, ))
-
-
-
 #' Fill the Annual Safety Report template
 #'
 #' This function fills out the SwissEthics annual safety report template with a
@@ -75,6 +14,7 @@
 #' @param snctp_number SNCTP number
 #' @param swissmedic_number Swissmedic number
 #' @param ec_name EC name (Lead EC and/concerned EC)
+#' @param tr_number Number for Transplantation Clinical Trials (FOPH number)
 #' @param product_name product name or intervention
 #' @param sponsor_contact contact details of sponsor(-investigator)
 #' @param inst_name_address name and address of institute
@@ -86,6 +26,15 @@
 #' @param n_pat_e number of enrolled participants
 #' @param n_pat_c number of completed participants
 #' @param n_pat_p number of prematurely terminated participants
+#' @param n_centers_t_ch total number of participating centres in CH
+#' @param n_centers_p_ch planned number of participating centres in CH
+#' @param n_centers_c_ch number of closed centres in CH
+#' @param n_centers_o_ch number of open centres in CH
+#' @param n_pat_t_ch target number of participants in CH
+#' @param n_pat_e_ch number of enrolled participants in CH
+#' @param n_pat_c_ch number of completed participants in CH
+#' @param n_pat_p_ch number of prematurely terminated participants in CH
+#' @param n_per_arm number of enrolled participants per arm, list with group 1 and 2, define here the names of your groups as in the data
 #' @param report_date report date
 #' @param period_from start of reporting period
 #' @param period_to end of reporting period
@@ -138,6 +87,7 @@
 #' #     snctp_number = "202200458",
 #' #     swissmedic_number = "....",
 #' #     ec_name = "Kantonale Ethikskommision Bern",
+#' #     tr_number = "",
 #' #     product_name = "Drug name",
 #' #     international = FALSE,
 #' #     trial_type = "imp",
@@ -189,6 +139,7 @@ asr <- function(data,
                 , snctp_number = "default"
                 , swissmedic_number = "default"
                 , ec_name = "default"
+                , tr_number = "default"
                 , product_name = "default"
                 , sponsor_contact = "default name, default number, default email"
                 , inst_name_address = "default name, default address"
@@ -196,10 +147,19 @@ asr <- function(data,
                 , n_centers_p = "default" #planned
                 , n_centers_c = "default" #closed
                 , n_centers_o = "default" #open
-                , n_pat_t = "default" #target
+                , n_pat_t = 500 #target
                 , n_pat_e = 300 #enrolled
-                , n_pat_c = "default" #complete
-                , n_pat_p = "default" #prematurely terminated
+                , n_pat_c = 100 #complete
+                , n_pat_p = 15 #prematurely terminated
+                , n_centers_t_ch = "default" # total in CH
+                , n_centers_p_ch = "default" #planned in CH
+                , n_centers_c_ch = "default" #closed in CH
+                , n_centers_o_ch = "default" #open in CH
+                , n_pat_t_ch = 500 #target in CH
+                , n_pat_e_ch = 300 #enrolled in CH
+                , n_pat_c_ch = 100 #complete in CH
+                , n_pat_p_ch = 15 #prematurely terminated in CH
+                , n_per_arm = c(grp1 = 150, grp2 = 150) #number of patients per arm, use NA if study is blinded
                 , report_date = format(Sys.Date(), format = "%d/%m/%Y")
                 , period_from = as.Date("2020-11-02")
                 , period_to = as.Date("2020-11-17")
@@ -402,6 +362,7 @@ asr <- function(data,
   #            "snctp_number",
   #            "swissmedic_number",
   #            "ec_name",
+  #            "tr_number",
   #            "product_name",
   #            "sponsor_contact",
   #            "inst_name_address",
@@ -431,26 +392,36 @@ asr <- function(data,
                                   snctp_number = get("snctp_number"),
                                   swissmedic_number = get("swissmedic_number"),
                                   ec_name = get("ec_name"),
+                                  tr_number = get("tr_number"),
                                   product_name = get("product_name"),
                                   sponsor_contact = get("sponsor_contact"),
                                   inst_name_address = get("inst_name_address"),
                                   report_date = get("report_date"),
                                   period = get("period"),
-                                  n_centers_t = get("n_centers_t"),
-                                  n_centers_p = get("n_centers_p"),
-                                  n_centers_c = get("n_centers_c"),
-                                  n_centers_o = get("n_centers_o"),
+                                  n_centers_t = as.character(get("n_centers_t")),
+                                  n_centers_p = as.character(get("n_centers_p")),
+                                  n_centers_c = as.character(get("n_centers_c")),
+                                  n_centers_o = as.character(get("n_centers_o")),
+                                  n_centers_t_ch = as.character(get("n_centers_t_ch")),
+                                  n_centers_p_ch = as.character(get("n_centers_p_ch")),
+                                  n_centers_c_ch = as.character(get("n_centers_c_ch")),
+                                  n_centers_o_ch = as.character(get("n_centers_o_ch")),
                                   n_pat_t = as.character(n_pat_t),
                                   n_pat_e = as.character(n_pat_e),
                                   n_pat_c = as.character(n_pat_c),
-                                  n_pat_p = as.character(n_pat_p) )
+                                  n_pat_p = as.character(n_pat_p),
+                                  n_pat_t_ch = as.character(n_pat_t_ch),
+                                  n_pat_e_ch = as.character(n_pat_e_ch),
+                                  n_pat_c_ch = as.character(n_pat_c_ch),
+                                  n_pat_p_ch = as.character(n_pat_p_ch))
 
 
   #}  ## participant safety ----
   summ <- asr_safety_summary(data = data,
                              period_data = period_data,
                              trial_type = trial_type,
-                             n_pat_e = n_pat_e)
+                             n_pat_e = n_pat_e,
+                             n_per_arm = n_per_arm)
 
   # doc <- doc %>%
   #   cursor_bookmark("partsafety_text")
@@ -462,115 +433,8 @@ asr <- function(data,
   doc <- doc %>%
     officer::set_doc_properties(partsafety_text = paste0(summ$txt, collapse = " ") )
 
-  # map <- data.frame(
-  #   col_key = c("x1", "x2", "x3", "x4", "x5"),
-  #   name = c('', 'Fatal cases', 'Serious Adverse Events, SAEs', 'Serious Adverse Drug Reactions, SADRs (only for IMPs)', 'Suspected Unexpected Serious Adverse Reactions, SUSARs (only for IMPs)'),
-  #   stringsAsFactors = FALSE)
-  #
-  # if(n_pat_e == "default (300)") n_pat_e <- 300
-  # n_pat_e <- as.numeric(n_pat_e)
-  # ### IMP ----
-  # if(trial_type == "imp"){
-  #
-  #   tab <- table(data$sae[data$related == TRUE])
-  #   tab <- sort(tab, decreasing = TRUE)[1:3]
-  #   most_freq <- paste0(names(tab), " (", tab, ")", collapse = ", ")
-  #
-  #
-  #   doc <- doc %>%
-  #     cursor_bookmark("partsafety_text") %>%
-  #     body_add_par(glue("During the reporting period, {length(unique(period_data$record_id))} of {n_pat_e} participants ({sprintf('%1.1f', length(unique(period_data$record_id))/n_pat_e*100)} %) reported a total of {nrow(period_data)} serious adverse events (SAEs)."), style = "Text") %>%
-  #     body_add_par(glue("{sum(data$related)} of {nrow(data)} SAEs ({sprintf('%1.1f', sum(data$related)/nrow(data)*100)} %) were classified 'related' to the IMP. The most frequent related SAEs documented were {most_freq}."), style = "Text") %>%
-  #     body_add_par(glue("{sum(data$class == 'SUSAR')} Suspected Unexpected Serious Adverse Reactions (SUSARs) occurred during the reporting period, which have been notified to the Swiss competent authorities."), style = "Text")
-  #
-  #   tab <- tribble(
-  #     ~x1, ~x2, ~x3, ~x4, ~x5,
-  #     # row 1
-  #     'Number of cases (during reporting period)',
-  #     sum(period_data$outcome == "Fatal"),
-  #     nrow(period_data),
-  #     sum(period_data$class == "SADR"),
-  #     sum(period_data$class == "SUSAR"),
-  #     # row 2
-  #     'Number of cases (cumulative) since the start of the clinical trial',
-  #     sum(data$outcome == "Fatal"),
-  #     nrow(data),
-  #     sum(data$class == "SADR"),
-  #     sum(data$class == "SUSAR")
-  #   )
-  #
-  #
-  #
-  # }
-  # ### medical device ----
-  # if(trial_type == "medical device"){
-  #
-  #   tab <- table(data$sae)
-  #   tab <- sort(tab, decreasing = TRUE)[1:3]
-  #   most_freq <- paste0(names(tab), " (", tab, ")", collapse = ", ")
-  #
-  #   doc <- doc %>%
-  #     cursor_bookmark("partsafety_text") %>%
-  #     body_add_par(glue("During the reporting period, a total of {nrow(period_data)} serious adverse events (SAEs) have been reported."), style = "Text") %>%
-  #     body_add_par(glue("In {sum(data$dev_attr)} of {nrow(data)} SAEs ({sprintf('%1.1f', sum(data$dev_attr)/nrow(data)*100)} %) it cannot be excluded that the events are attributable to the medical device under investigation."), style = "Text") %>%
-  #     body_add_par(glue("In {sum(data$dev_int)} of {nrow(data)} SAEs ({sprintf('%1.1f', sum(data$dev_int)/nrow(data)*100)} %) it cannot be excluded that the events are attributable to an intervention undertaken in the clinical trial."), style = "Text") %>%
-  #     body_add_par(glue("The most frequent SAEs documented were {most_freq}."), style = "Text") %>%
-  #     body_add_par(glue("With respect to the expectedness of the event, {sum(data$expected)} ({sprintf('%1.1f', sum(data$expected)/nrow(data)*100)} %) of the SAEs were expected and {sum(!data$expected)} ({sprintf('%1.1f', sum(!data$expected)/nrow(data)*100)} %) were classified as unexpected."), style = "Text") %>%
-  #     body_add_par(glue("{sum(data$devdef)} device deficiencies were observed."), style = "Text") %>%
-  #     body_add_par(glue("{sum(safetymeasure)} health hazards that required safety-related measures occurred."), style = "Text")
-  #
-  #
-  #   tab <- tribble(
-  #     ~x1, ~x2, ~x3, ~x4, ~x5,
-  #     # row 1
-  #     'Number of cases (during reporting period)',
-  #     sum(period_data$outcome == "Fatal"),
-  #     nrow(period_data),
-  #     NA,
-  #     NA,
-  #     # row 2
-  #     'Number of cases (cumulative) since the start of the clinical trial',
-  #     sum(data$outcome == "Fatal"),
-  #     nrow(data),
-  #     NA,
-  #     NA
-  #   )
-  #
-  # }
-  #
-  # ### other ----
-  # if(trial_type == "other"){
-  #   doc <- doc %>%
-  #     cursor_bookmark("partsafety_text") %>%
-  #     body_add_par(glue("During the reporting period, {length(unique(period_data$record_id))} of {n_pat_e} participants ({sprintf('%1.1f', length(unique(period_data$record_id))/n_pat_e*100)} %) reported a total of {nrow(period_data)} serious adverse events (SAEs; with possible relationship to the intervention)."), style = "Text") %>%
-  #     body_add_par(glue("The most frequent SAEs documented were {most_freq}."), style = "Text")
-  #
-  #   tab <- tribble(
-  #     ~x1, ~x2, ~x3, ~x4, ~x5,
-  #     # row 1
-  #     'Number of cases (during reporting period)',
-  #     sum(period_data$outcome == "Fatal"),
-  #     nrow(period_data),
-  #     NA,
-  #     NA,
-  #     # row 2
-  #     'Number of cases (cumulative) since the start of the clinical trial',
-  #     sum(data$outcome == "Fatal"),
-  #     nrow(data),
-  #     NA,
-  #     NA
-  #   )
-  #
-  # }
-
-  # ft <- tab %>%
-  #   flextable() %>%
-  #   set_header_df(mapping = map, key = "col_key") %>%
-  #   valign(part = "head", valign = "top") %>%
-  #   border(border = fp_border(color = "#4FB4E0"), part="all") %>%
-  #   fontsize(size = 8, part = "all") %>%
-  #   font(fontname = "Helvetica", part = "all") %>%
-  #   width(1:5, (18.57/5)*.393)
+  doc <- doc %>%
+    officer::set_doc_properties(partsafety_text_all = paste0(summ$txt_all, collapse = " ") )
 
   ft <- summ$tab %>%
     flextable() %>%
@@ -588,7 +452,6 @@ asr <- function(data,
 
 
 
-
   ## line listing ----
   if(!tx_var){
     llist <- data[, c("class", "sae_n", "record_id", "agesex", "country_site",
@@ -599,7 +462,7 @@ asr <- function(data,
                       "Participants ID",
                       "Age / Sex (F=female, M=male)",
                       "Country and site in which participant is/was enrolled (for multicentre, international trials)",
-                      "Description of event/ reaction",
+                      "AE term",
                       "Description of intervention (dosage, schedule, route, if applicable)",
                       "Date of onset",	"Date of treatment (start and stop)",
                       "Outcome (e.g. resolved, fatal, improved, sequel, unknown)",
@@ -615,16 +478,17 @@ asr <- function(data,
                       "Intervention",
                       "Age / Sex (F=female, M=male)",
                       "Country and site in which participant is/was enrolled (for multicentre, international trials)",
-                      "Description of event/ reaction",
+                      "AE term",
                       "Description of intervention (dosage, schedule, route, if applicable)",
-                      "Date of onset",	"Date of treatment (start and stop)",
+                      "Date of onset",
+                      "Date of treatment (start and stop)",
                       "Outcome (e.g. resolved, fatal, improved, sequel, unknown)",
                       "Comments, if relevant (e.g. causality assessment, relationship)"
     )
   }
   llist_ft <- flextable(llist) %>%
-    add_header_lines("Line listing of SAEs, SADRs and SUSARs, including international cases
-(code and version of used standard (e.g. MedDRA or CTCAE) should be indicated, details on SUSARs will be attached as appendices)") %>%
+    #add_header_lines("Line listing of SAEs, SADRs and SUSARs, including international cases
+#(code and version of used standard (e.g. MedDRA or CTCAE) should be indicated, details on SUSARs will be attached as appendices)") %>%
     border(border = fp_border(color = "#4FB4E0"), part="all") %>%
     fontsize(size = 8, part = "all") %>%
     font(fontname = "Helvetica", part = "all")

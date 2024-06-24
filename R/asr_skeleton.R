@@ -1,5 +1,7 @@
 asr_skeleton <- function(){
 
+  require(rstudioapi)
+
   args <- formals(asr)
 
   args$data <- "sae_data"
@@ -13,6 +15,7 @@ asr_skeleton <- function(){
     snctp_number = "",
     swissmedic_number = "",
     ec_name = "# ethics committee",
+    tr_number = "# Number for Transplantation Clinical Trials (FOPH number)",
     product_name = "# product/intervention name\n\n    # SPONSOR INFORMATION",
     sponsor_contact = "",
     inst_name_address = "\n\n    # TRIAL PROGRESS",
@@ -24,6 +27,15 @@ asr_skeleton <- function(){
     n_pat_e = "# actual number of participants enrolled",
     n_pat_c = "# number of participants completed",
     n_pat_p = "# number of participants prematurely terminated\n\n    # REPORT INFORMATION",
+    n_centers_t_ch = '#total number of participating centres in CH',
+    n_centers_p_ch = '#planned number of participating centres in CH',
+    n_centers_c_ch = '#number of closed centres in CH',
+    n_centers_o_ch = '#number of open centres in CH',
+    n_pat_t_ch = "target number of participants in CH",
+    n_pat_e_ch = "number of enrolled participants in CH",
+    n_pat_c_ch = "number of completed participants in CH",
+    n_pat_p_ch = "number of prematurely terminated participants in CH",
+    n_per_arm  = "number of enrolled participants per arm, list with group 1 and 2, define here the names of your groups as in the data",
     report_date = "# normally Sys.Date()",
     period_from = "# date of previous report",
     period_to = "# probably Sys.Date()-1",
@@ -59,8 +71,8 @@ asr_skeleton <- function(){
   }) |>
     paste(collapse = ", \n    ")
 
-  context <- rstudioapi::getSourceEditorContext()
+  context <- rstudioapi:::getSourceEditorContext()
   id <- context$id
-  rstudioapi::insertText(text = paste0("asr(\n    ", args, "\n)"), id = id)
+  rstudioapi:::insertText(text = paste0("asr(\n    ", args, "\n)"), id = id)
 
 }

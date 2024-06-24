@@ -1,3 +1,8 @@
+# SwissASR 0.5.0
+
+* Modified the template of the ASR to align with the newest template available on the swissethics website. Main changes: update of the text in some parts of the template and inclusion of the transplant typology of trial.
+* Addition of an RStudio add-in which pastes a template `asr` call into the active R script. In RStudio, put the cursor in the desired file, click "Addins" and then "Add asr call template" and the template should appear. Using the guiding text, edit the arguments as appropriate.
+
 # SwissASR 0.4.0
 
 * Modified some bookmarks into word fields such that the replacement can still happen in tables and not after them, as per recent update of officer package. This resolves issue #9.
