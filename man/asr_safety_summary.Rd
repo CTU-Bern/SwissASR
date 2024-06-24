@@ -47,4 +47,8 @@ asr_safety_summary(data = prepped$data,
 # other trial
 asr_safety_summary(data = prepped$data, period_data = prepped$period_data, "o", 60,
  n_per_arm = list(grp1 = 150, grp2 = 150))
+
+# tpr trial
+asr_safety_summary(data = prepped$data, period_data = prepped$period_data, "t", 60,
+ n_per_arm = list(grp1 = 150, grp2 = 150))
 }
