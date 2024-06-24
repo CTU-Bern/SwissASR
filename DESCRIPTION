@@ -28,3 +28,5 @@ Imports:
     stringr,
     tibble, 
     doconv
+Suggests:
+    rstudioapi
