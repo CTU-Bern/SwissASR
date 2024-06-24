@@ -1,5 +1,7 @@
 asr_skeleton <- function(){
 
+  require(rstudioapi)
+
   args <- formals(asr)
 
   args$data <- "sae_data"
@@ -69,8 +71,8 @@ asr_skeleton <- function(){
   }) |>
     paste(collapse = ", \n    ")
 
-  context <- rstudioapi::getSourceEditorContext()
+  context <- getSourceEditorContext()
   id <- context$id
-  rstudioapi::insertText(text = paste0("asr(\n    ", args, "\n)"), id = id)
+  insertText(text = paste0("asr(\n    ", args, "\n)"), id = id)
 
 }
