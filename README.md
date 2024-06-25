@@ -53,6 +53,7 @@ Default values are then used for most parameters, which is not ideal.
 Changing the default settings will in practice be required for every
 study. SwissASR includes an RStudio addin for a skeleton call, including
 annotations. Use it from the addins menu:
+
 ![](man/figures/SwissASR_addin.png)
 
 An example call might look as follows:
