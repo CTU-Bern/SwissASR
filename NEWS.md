@@ -1,3 +1,7 @@
+# SwissASR 0.5.1
+
+* Corrected the version of the word template, 2.1 instead of 1.1. 
+
 # SwissASR 0.5.0
 
 * Modified the template of the ASR to align with the newest template available on the swissethics website. Main changes: update of the text in some parts of the template and inclusion of the transplant typology of trial.
