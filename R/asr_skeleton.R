@@ -67,9 +67,9 @@ asr_skeleton <- function(){
   args <- lapply(1:length(args), function(x){
     arg <- names(args)[x]
     helptext <- args_helpers[[arg]]
-    paste(arg, "=", deparse(args[[x]]), helptext)
+    paste(arg, "=", deparse(args[[x]]), ", ", helptext)
   }) |>
-    paste(collapse = ", \n    ")
+    paste(collapse = " \n    ")
 
   context <- rstudioapi:::getSourceEditorContext()
   id <- context$id

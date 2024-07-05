@@ -318,7 +318,8 @@ asr <- function(data,
 #   ## trt ----
 #   check_fac_char(data$trt)
 #   data$trt <- as.character(data$trt)
-  #
+#
+
   dfs <- asr_dataprep(data,
                       period_from = period_from,
                       period_to = period_to
@@ -382,8 +383,11 @@ asr <- function(data,
   #     body_add_par(x, pos = "after")
   # }
 
+  # format the dates for the text
+  period_from_f <- format(period_from, format = "%d/%m/%Y")
+  period_to_f <- format(period_to, format = "%d/%m/%Y")
 
-  period <- glue("{period_from} to {period_to}")
+  period <- glue("{period_from_f} to {period_to_f}")
 ## New code to insert the fields instead of bookmarks
     doc <- doc %>%
       set_doc_properties(trial_title = get("trial_title"),
@@ -450,6 +454,12 @@ asr <- function(data,
     cursor_bookmark("partsafety_tab") %>%
     body_add_flextable(ft)
 
+  if(all(!is.na(n_per_arm))){
+    grp <- names(n_per_arm)
+  doc <- doc %>%
+    officer::set_doc_properties(text_groups =
+      paste0("Note: If the results are displayed by groups, N is the total and in parenthesis there are the events for ",grp[1]," and ", grp[2]," groups, respectively.") )
+  }
 
 
   ## line listing ----
