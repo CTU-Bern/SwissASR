@@ -63,8 +63,8 @@
 #     class = msample(c("SAE", "SUSAR", "SADR")),
 #     expected = msample(c(TRUE, FALSE)),
 #     devdef = msample(c(TRUE, FALSE)),
+#     devdefcouldlead = msample(c(TRUE, FALSE)),
 #     devattr = msample(c(TRUE, FALSE)),
-#     devdef = msample(c(TRUE, FALSE)),
 #     devint = msample(c(TRUE, FALSE)),
 #     safetymeasure = msample(c(TRUE, FALSE))
 # )
@@ -129,6 +129,7 @@ asr_dataprep <- function(data
                          , var_relation = "related"
                          , var_expected = "expected"
                          , var_devdef = "devdef"
+                         , var_devdefcouldlead = "devdefcouldlead"
                          , var_devattr = "devattr"
                          , var_devint = "devint"
                          , var_safetymeasure = "safetymeasure"
@@ -205,11 +206,12 @@ asr_dataprep <- function(data
   if(trial_type == "medical device"){
     names(data)[names(data) == var_expected] <- "expected"
     names(data)[names(data) == var_devdef] <- "devdef"
+    names(data)[names(data) == var_devdefcouldlead] <- "devdefcouldlead"
     names(data)[names(data) == var_devattr] <- "devattr"
     names(data)[names(data) == var_devint] <- "devint"
     names(data)[names(data) == var_safetymeasure] <- "safetymeasure"
 
-    vars <- c("expected", "devdef", "devattr", "devint", "safetymeasure")
+    vars <- c("expected", "devdef", "devdefcouldlead","devattr", "devint", "safetymeasure")
     if(!all(vars %in% names(data))){
       stop(paste(vars[!vars %in% names(data)], collapse = ", "), " not found in data")
     }

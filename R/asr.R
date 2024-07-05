@@ -58,6 +58,7 @@
 #' @param var_relation variable containing the relationship to randomized intervention
 #' @param var_expected variable saying whether the SAE was expected
 #' @param var_devdef variable containing whether the SAE is a device deficiency
+#' @param var_devdefcouldlead variable containing whether the device deficiency could have lead to an SAE
 #' @param var_devattr variable containing whether the SAE is attributable to the device
 #' @param var_devint variable containing whether the SAE is attributable to an intervention in the trial
 #' @param var_safetymeasure variable containing whether the SAE required safety related measures
@@ -184,6 +185,7 @@ asr <- function(data,
                 , var_relation = "related"
                 , var_expected = "expected"
                 , var_devdef = "devdef"
+                , var_devdefcouldlead = "devdefcouldlead"
                 , var_devattr = "devattr"
                 , var_devint = "devint"
                 , var_safetymeasure = "safetymeasure"
@@ -236,11 +238,12 @@ asr <- function(data,
   # if(trial_type == "medical device"){
   #   names(data)[names(data) == var_expected] <- "expected"
   #   names(data)[names(data) == var_devdef] <- "devdef"
+  #   names(data)[names(data) == var_devdefcouldlead] <- "devdefcouldlead"
   #   names(data)[names(data) == var_devattr] <- "devattr"
   #   names(data)[names(data) == var_devint] <- "devint"
   #   names(data)[names(data) == var_safetymeasure] <- "safetymeasure"
   #
-  #   vars <- c("expected", "devdef", "devattr", "devint", "safetymeasure")
+  #   vars <- c("expected", "devdef", "devdefcouldlead","devattr", "devint", "safetymeasure")
   #   if(!all(vars %in% names(data))){
   #     stop(paste(vars[!vars %in% names(data)], collapse = ", "), " not found in data")
   #   }
@@ -341,6 +344,7 @@ asr <- function(data,
                       , var_relation = var_relation
                       , var_expected = var_expected
                       , var_devdef = var_devdef
+                      , var_devdefcouldlead = var_devdefcouldlead
                       , var_devattr = var_devattr
                       , var_devint = var_devint
                       , var_safetymeasure = var_safetymeasure
