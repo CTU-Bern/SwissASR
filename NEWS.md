@@ -1,3 +1,7 @@
+# SwissASR 0.5.2
+
+* Correction of template inputs, dates formatting and additional note for SAEs tables. 
+
 # SwissASR 0.5.1
 
 * Corrected the version of the word template, 2.1 instead of 1.1. 
