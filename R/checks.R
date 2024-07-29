@@ -54,3 +54,10 @@ check_listing_names <- function(names
 
 }
 
+check_field_characters <- function(x){
+  if(grepl("&|<br>", x))
+    warning("Special character found in '", x, "'\n",
+            "  Special characters or strings such as '&' and '<br>' may cause problems with Word.\n",
+            "  We advise replacing them with other characters.")
+  return(NULL)
+}

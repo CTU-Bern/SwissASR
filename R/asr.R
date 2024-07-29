@@ -323,6 +323,23 @@ asr <- function(data,
 #   data$trt <- as.character(data$trt)
 #
 
+# Check in the text inputs if any detected special character causing problems is present
+  for(string in c("trial_title",
+             "protocol_number",
+             "basec_number",
+             "snctp_number",
+             "swissmedic_number",
+             "ec_name",
+             "tr_number",
+             "product_name",
+             "sponsor_contact",
+             "inst_name_address")){
+    check_field_characters(get(string)) }
+
+# This check is for the arm names in case these are available and requested
+  if(!is.null(n_per_arm)){lapply(names(n_per_arm),check_field_characters)}
+
+
   dfs <- asr_dataprep(data,
                       period_from = period_from,
                       period_to = period_to
