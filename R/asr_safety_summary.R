@@ -51,6 +51,9 @@ asr_safety_summary <- function(data, period_data, trial_type, n_pat_e, n_per_arm
 
   trial_type <- match.arg(trial_type, c("imp", "medical device", "other","trp"))
 
+  ## display unique values in the trt variable
+  check <- unique(data$trt)
+
   if(trial_type == "imp"){
     # FOR IMP TRIALS
 
@@ -82,6 +85,7 @@ asr_safety_summary <- function(data, period_data, trial_type, n_pat_e, n_per_arm
       stringsAsFactors = FALSE)
 
     if(all(!is.na(n_per_arm))){
+      if(!all(check %in% names(n_per_arm))){
       ### define the values for the two interventional groups
       grp <- names(n_per_arm)
 
@@ -92,7 +96,7 @@ asr_safety_summary <- function(data, period_data, trial_type, n_pat_e, n_per_arm
         'Number of cases (during reporting period)',
         paste0("N = ", sum(period_data$outcome == "Fatal", na.rm=TRUE),
         " (",sum(period_data$outcome == "Fatal" & period_data$intervention==grp[1], na.rm=TRUE),",",
-        sum(period_data$outcome == "Fatal" & period_data$intervention==grp[2]), na.rm=TRUE,")"),
+        sum(period_data$outcome == "Fatal" & period_data$intervention==grp[2], na.rm=TRUE),")"),
         paste0("N = ", sum(period_data$outcome != "Fatal", na.rm=TRUE),
                " (",sum(period_data$outcome != "Fatal" & period_data$intervention==grp[1],na.rm=TRUE),",",
                sum(period_data$outcome != "Fatal" & period_data$intervention==grp[2], na.rm=TRUE),")"),
@@ -117,22 +121,22 @@ asr_safety_summary <- function(data, period_data, trial_type, n_pat_e, n_per_arm
                " (",sum(data$class == "SUSAR" & data$intervention==grp[1], na.rm=TRUE),",",
                sum(data$class == "SUSAR" & data$intervention==grp[2], na.rm=TRUE),")"),
       )
-    } else {
+    }} else {
 
       tab <- tribble(
         ~desc, ~fatal, ~sae, ~sadr, ~susar,
         # row 1
         'Number of cases (during reporting period)',
-        sum(period_data$outcome == "Fatal"),
-        sum(period_data$outcome != "Fatal"),
-        sum(period_data$class == "SADR"),
-        sum(period_data$class == "SUSAR"),
+        sum(period_data$outcome == "Fatal", na.rm=TRUE),
+        sum(period_data$outcome != "Fatal", na.rm=TRUE),
+        sum(period_data$class == "SADR", na.rm=TRUE),
+        sum(period_data$class == "SUSAR", na.rm=TRUE),
         # row 2
         'Number of cases (cumulative) since the start of the clinical trial',
-        sum(data$outcome == "Fatal"),
-        sum(data$outcome != "Fatal"),
-        sum(data$class == "SADR"),
-        sum(data$class == "SUSAR")
+        sum(data$outcome == "Fatal", na.rm=TRUE),
+        sum(data$outcome != "Fatal", na.rm=TRUE),
+        sum(data$class == "SADR", na.rm=TRUE),
+        sum(data$class == "SUSAR", na.rm=TRUE)
       )
 
     }
@@ -190,40 +194,40 @@ asr_safety_summary <- function(data, period_data, trial_type, n_pat_e, n_per_arm
       ~desc, ~sade ,~attr, ~measures,
       # row 1
       'Number of cases (during reporting period)',
-      paste0("N = ", sum(period_data$class == "SADE"),
-             " (",sum(period_data$class == "SADE" & period_data$intervention==grp[1]),",",
-             sum(period_data$class == "SADE" & period_data$intervention==grp[2]),")"),
-      paste0("N = ", sum(period_data$devattr),
-             " (",sum(period_data$devattr & period_data$intervention==grp[1]),",",
-             sum(period_data$devattr & period_data$intervention==grp[2]),")"),
-      paste0("N = ", sum(period_data$safetymeasure),
-             " (",sum(period_data$safetymeasure & period_data$intervention==grp[1]),",",
-             sum(period_data$safetymeasure & period_data$intervention==grp[2]),")"),
+      paste0("N = ", sum(period_data$class == "SADE", na.rm=TRUE),
+             " (",sum(period_data$class == "SADE" & period_data$intervention==grp[1], na.rm=TRUE),",",
+             sum(period_data$class == "SADE" & period_data$intervention==grp[2], na.rm=TRUE),")"),
+      paste0("N = ", sum(period_data$devattr, na.rm=TRUE),
+             " (",sum(period_data$devattr & period_data$intervention==grp[1], na.rm=TRUE),",",
+             sum(period_data$devattr & period_data$intervention==grp[2], na.rm=TRUE),")"),
+      paste0("N = ", sum(period_data$safetymeasure, na.rm=TRUE),
+             " (",sum(period_data$safetymeasure & period_data$intervention==grp[1], na.rm=TRUE),",",
+             sum(period_data$safetymeasure & period_data$intervention==grp[2], na.rm=TRUE),")"),
       # row 2
       'Number of cases (cumulative) since the start of the clinical trial',
-      paste0("N = ", sum(data$class == "SADE"),
-             " (",sum(data$class == "SADE" & data$intervention==grp[1]),",",
-             sum(data$class == "SADE" & data$intervention==grp[2]),")"),
-      paste0("N = ", sum(data$devattr),
-             " (",sum(data$devattr & data$intervention==grp[1]),",",
-             sum(data$devattr & data$intervention==grp[2]),")"),
-      paste0("N = ", sum(data$safetymeasure),
-             " (",sum(data$safetymeasure & data$intervention==grp[1]),",",
-             sum(data$safetymeasure & data$intervention==grp[2]),")"),
+      paste0("N = ", sum(data$class == "SADE", na.rm=TRUE),
+             " (",sum(data$class == "SADE" & data$intervention==grp[1], na.rm=TRUE),",",
+             sum(data$class == "SADE" & data$intervention==grp[2], na.rm=TRUE),")"),
+      paste0("N = ", sum(data$devattr, na.rm=TRUE),
+             " (",sum(data$devattr & data$intervention==grp[1], na.rm=TRUE),",",
+             sum(data$devattr & data$intervention==grp[2], na.rm=TRUE),")"),
+      paste0("N = ", sum(data$safetymeasure, na.rm=TRUE),
+             " (",sum(data$safetymeasure & data$intervention==grp[1], na.rm=TRUE),",",
+             sum(data$safetymeasure & data$intervention==grp[2], na.rm=TRUE),")"),
     )
     }else{
       tab <- tribble(
         ~desc, ~sade ,~attr, ~measures,
         # row 1
         'Number of cases (during reporting period)',
-        sum(period_data$class == "SADE"),
-        sum(period_data$devattr),
-        sum(period_data$safetymeasure),
+        sum(period_data$class == "SADE", na.rm=TRUE),
+        sum(period_data$devattr, na.rm=TRUE),
+        sum(period_data$safetymeasure, na.rm=TRUE),
         # row 2
         'Number of cases (cumulative) since the start of the clinical trial',
-        sum(data$class == "SADE"),
-        sum(data$devattr),
-        sum(data$safetymeasure)
+        sum(data$class == "SADE", na.rm=TRUE),
+        sum(data$devattr, na.rm=TRUE),
+        sum(data$safetymeasure, na.rm=TRUE)
       )
     }
 
@@ -259,20 +263,20 @@ asr_safety_summary <- function(data, period_data, trial_type, n_pat_e, n_per_arm
         ~desc, ~fatal, ~nfatal,
         # row 1
         'Number of cases (during reporting period)',
-        paste0("N = ", sum(period_data$outcome == "Fatal" & period_data$related==1),
-               " (",sum(period_data$outcome == "Fatal" & period_data$related==1 & period_data$intervention==grp[1]),",",
-               sum(period_data$outcome == "Fatal" & period_data$related==1 & period_data$intervention==grp[2]),")"),
-        paste0("N = ", sum(period_data$outcome != "Fatal" & period_data$related==1),
-               " (",sum(period_data$outcome != "Fatal" & period_data$related==1 & period_data$intervention==grp[1]),",",
-               sum(period_data$outcome != "Fatal" & period_data$related==1 & period_data$intervention==grp[2]),")"),
+        paste0("N = ", sum(period_data$outcome == "Fatal" & period_data$related==1, na.rm=TRUE),
+               " (",sum(period_data$outcome == "Fatal" & period_data$related==1 & period_data$intervention==grp[1], na.rm=TRUE),",",
+               sum(period_data$outcome == "Fatal" & period_data$related==1 & period_data$intervention==grp[2], na.rm=TRUE),")"),
+        paste0("N = ", sum(period_data$outcome != "Fatal" & period_data$related==1, na.rm=TRUE),
+               " (",sum(period_data$outcome != "Fatal" & period_data$related==1 & period_data$intervention==grp[1], na.rm=TRUE),",",
+               sum(period_data$outcome != "Fatal" & period_data$related==1 & period_data$intervention==grp[2], na.rm=TRUE),")"),
         # row 2
         'Number of cases (cumulative) since the start of the clinical trial',
-        paste0("N = ", sum(data$outcome == "Fatal" & data$related==1),
-               " (",sum(data$outcome == "Fatal" & data$related==1 & data$intervention==grp[1]),",",
-               sum(data$outcome == "Fatal" & data$related==1 & data$intervention==grp[2]),")"),
-        paste0("N = ", sum(data$outcome != "Fatal" & data$related==1),
-               " (",sum(data$outcome != "Fatal" & data$related==1 & data$intervention==grp[1]),",",
-               sum(data$outcome != "Fatal" & data$related==1 & data$intervention==grp[2]),")"),
+        paste0("N = ", sum(data$outcome == "Fatal" & data$related==1, na.rm=TRUE),
+               " (",sum(data$outcome == "Fatal" & data$related==1 & data$intervention==grp[1], na.rm=TRUE),",",
+               sum(data$outcome == "Fatal" & data$related==1 & data$intervention==grp[2], na.rm=TRUE),")"),
+        paste0("N = ", sum(data$outcome != "Fatal" & data$related==1, na.rm=TRUE),
+               " (",sum(data$outcome != "Fatal" & data$related==1 & data$intervention==grp[1], na.rm=TRUE),",",
+               sum(data$outcome != "Fatal" & data$related==1 & data$intervention==grp[2], na.rm=TRUE),")"),
       )
 
     }else{
@@ -280,12 +284,12 @@ asr_safety_summary <- function(data, period_data, trial_type, n_pat_e, n_per_arm
         ~desc, ~fatal, ~nfatal,
         # row 1
         'Number of cases (during reporting period)',
-        sum(period_data$outcome == "Fatal" & period_data$related==1),
-        sum(period_data$outcome != "Fatal" & period_data$related==1),
+        sum(period_data$outcome == "Fatal" & period_data$related==1, na.rm=TRUE),
+        sum(period_data$outcome != "Fatal" & period_data$related==1, na.rm=TRUE),
         # row 2
         'Number of cases (cumulative) since the start of the clinical trial',
-        sum(data$outcome == "Fatal" & data$related==1),
-        sum(data$outcome != "Fatal" & data$related==1),
+        sum(data$outcome == "Fatal" & data$related==1, na.rm=TRUE),
+        sum(data$outcome != "Fatal" & data$related==1, na.rm=TRUE),
       )
     }
 
@@ -331,56 +335,56 @@ asr_safety_summary <- function(data, period_data, trial_type, n_pat_e, n_per_arm
       ~desc, ~fatal, ~nfatal, ~nsadr, ~sadr, ~susar,
       # row 1
       'Number of cases (during reporting period)',
-      paste0("N = ", sum(period_data$outcome == "Fatal" ),
-             " (",sum(period_data$outcome == "Fatal" & period_data$intervention==grp[1]),",",
-             sum(period_data$outcome == "Fatal"& period_data$intervention==grp[2]),")"),
-      paste0("N = ", sum(period_data$outcome != "Fatal" & period_data$related==1),
-             " (",sum(period_data$outcome != "Fatal" & period_data$intervention==grp[1]),",",
-             sum(period_data$outcome != "Fatal" & period_data$intervention==grp[2]),")"),
-      paste0("N = ", sum(period_data$class != "NSADR" ),
-             " (",sum(period_data$class != "NSADR" & period_data$intervention==grp[1]),",",
-             sum(period_data$class != "NSADR" & period_data$intervention==grp[2]),")"),
-      paste0("N = ", sum(period_data$class != "SADR" ),
-             " (",sum(period_data$class != "SADR" & period_data$intervention==grp[1]),",",
-             sum(period_data$class != "SADR" & period_data$intervention==grp[2]),")"),
-      paste0("N = ", sum(period_data$class != "SUSAR" ),
-             " (",sum(period_data$class != "SUSAR" & period_data$intervention==grp[1]),",",
-             sum(period_data$class != "SUSAR" & period_data$intervention==grp[2]),")"),
+      paste0("N = ", sum(period_data$outcome == "Fatal" , na.rm=TRUE),
+             " (",sum(period_data$outcome == "Fatal" & period_data$intervention==grp[1], na.rm=TRUE),",",
+             sum(period_data$outcome == "Fatal"& period_data$intervention==grp[2], na.rm=TRUE),")"),
+      paste0("N = ", sum(period_data$outcome != "Fatal" & period_data$related==1, na.rm=TRUE),
+             " (",sum(period_data$outcome != "Fatal" & period_data$intervention==grp[1], na.rm=TRUE),",",
+             sum(period_data$outcome != "Fatal" & period_data$intervention==grp[2], na.rm=TRUE),")"),
+      paste0("N = ", sum(period_data$class != "NSADR", na.rm=TRUE),
+             " (",sum(period_data$class != "NSADR" & period_data$intervention==grp[1], na.rm=TRUE),",",
+             sum(period_data$class != "NSADR" & period_data$intervention==grp[2], na.rm=TRUE),")"),
+      paste0("N = ", sum(period_data$class != "SADR", na.rm=TRUE),
+             " (",sum(period_data$class != "SADR" & period_data$intervention==grp[1], na.rm=TRUE),",",
+             sum(period_data$class != "SADR" & period_data$intervention==grp[2], na.rm=TRUE),")"),
+      paste0("N = ", sum(period_data$class != "SUSAR", na.rm=TRUE),
+             " (",sum(period_data$class != "SUSAR" & period_data$intervention==grp[1], na.rm=TRUE),",",
+             sum(period_data$class != "SUSAR" & period_data$intervention==grp[2], na.rm=TRUE),")"),
       # row 2
       'Number of cases (cumulative) since the start of the clinical trial',
-      paste0("N = ", sum(data$outcome == "Fatal" ),
-             " (",sum(data$outcome == "Fatal" & data$intervention==grp[1]),",",
-             sum(data$outcome == "Fatal"& data$intervention==grp[2]),")"),
-      paste0("N = ", sum(data$outcome != "Fatal" ),
-             " (",sum(data$outcome != "Fatal" & data$intervention==grp[1]),",",
-             sum(data$outcome != "Fatal"& data$intervention==grp[2]),")"),
-      paste0("N = ", sum(data$class != "NSADR" ),
+      paste0("N = ", sum(data$outcome == "Fatal", na.rm=TRUE),
+             " (",sum(data$outcome == "Fatal" & data$intervention==grp[1], na.rm=TRUE),",",
+             sum(data$outcome == "Fatal"& data$intervention==grp[2], na.rm=TRUE),")"),
+      paste0("N = ", sum(data$outcome != "Fatal", na.rm=TRUE),
+             " (",sum(data$outcome != "Fatal" & data$intervention==grp[1], na.rm=TRUE),",",
+             sum(data$outcome != "Fatal"& data$intervention==grp[2], na.rm=TRUE),")"),
+      paste0("N = ", sum(data$class != "NSADR", na.rm=TRUE),
              " (",sum(data$class != "NSADR" & data$intervention==grp[1]),",",
              sum(data$class != "NSADR" & data$intervention==grp[2]),")"),
-      paste0("N = ", sum(data$class != "SADR" ),
-             " (",sum(data$class != "SADR" & data$intervention==grp[1]),",",
-             sum(data$class != "SADR" & data$intervention==grp[2]),")"),
-      paste0("N = ", sum(data$class != "SUSAR" ),
-             " (",sum(data$class != "SUSAR" & data$intervention==grp[1]),",",
-             sum(data$class != "SUSAR" & data$intervention==grp[2]),")"),
+      paste0("N = ", sum(data$class != "SADR", na.rm=TRUE),
+             " (",sum(data$class != "SADR" & data$intervention==grp[1], na.rm=TRUE),",",
+             sum(data$class != "SADR" & data$intervention==grp[2], na.rm=TRUE),")"),
+      paste0("N = ", sum(data$class != "SUSAR", na.rm=TRUE),
+             " (",sum(data$class != "SUSAR" & data$intervention==grp[1], na.rm=TRUE),",",
+             sum(data$class != "SUSAR" & data$intervention==grp[2], na.rm=TRUE),")"),
     )
     }else{
       tab <- tribble(
         ~desc, ~fatal, ~nfatal, ~nsadr, ~sadr, ~susar,
         # row 1
         'Number of cases (during reporting period)',
-        sum(period_data$outcome == "Fatal"),
-        sum(period_data$outcome != "Fatal"),
-        sum(period_data$class == "NSADR"),
-        sum(period_data$class == "SADR"),
-        sum(period_data$class == "SUSAR"),
+        sum(period_data$outcome == "Fatal", na.rm=TRUE),
+        sum(period_data$outcome != "Fatal", na.rm=TRUE),
+        sum(period_data$class == "NSADR", na.rm=TRUE),
+        sum(period_data$class == "SADR", na.rm=TRUE),
+        sum(period_data$class == "SUSAR", na.rm=TRUE),
         # row 2
         'Number of cases (cumulative) since the start of the clinical trial',
-        sum(data$outcome == "Fatal"),
-        sum(data$outcome != "Fatal"),
-        sum(data$class == "NSADR"),
-        sum(data$class == "SADR"),
-        sum(data$class == "SUSAR")
+        sum(data$outcome == "Fatal", na.rm=TRUE),
+        sum(data$outcome != "Fatal", na.rm=TRUE),
+        sum(data$class == "NSADR", na.rm=TRUE),
+        sum(data$class == "SADR", na.rm=TRUE),
+        sum(data$class == "SUSAR", na.rm=TRUE)
       )
     }
 

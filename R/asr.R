@@ -79,58 +79,6 @@
 #' file <- tempfile("asr", fileext = ".docx")
 #' asr(asr_sae, file)
 #'
-#' # # more usual use will require passing more information:
-#' # asr(asr_sae, file,
-#' #     # trial info
-#' #     trial_title = "Example Trial Name",
-#' #     protocol_number = "20221002130",
-#' #     basec_number = "",
-#' #     snctp_number = "202200458",
-#' #     swissmedic_number = "....",
-#' #     ec_name = "Kantonale Ethikskommision Bern",
-#' #     tr_number = "",
-#' #     product_name = "Drug name",
-#' #     international = FALSE,
-#' #     trial_type = "imp",
-#' #     # Sponsor info
-#' #     sponsor_contact = "Sponsor name, Sponsor phone number, Sponsor email",
-#' #     inst_name_address = "Institute name, Institute address",
-#' #     # site info
-#' #     n_centers_t = 20,        # total number
-#' #     n_centers_p = "default", # planned
-#' #     n_centers_c = "default", # closed
-#' #     n_centers_o = "default", # open
-#' #     # participant info
-#' #     n_pat_t = 1000,          # target
-#' #     n_pat_e = 300,           # enrolled
-#' #     n_pat_c = 0,             # complete
-#' #     n_pat_p = 0,             # prematurely terminated
-#' #     # report info
-#' #     report_date = format(Sys.Date(), format = "%d/%m/%Y"),
-#' #     period_from = as.Date("2020-11-02"),
-#' #     period_to = as.Date("2020-11-17"),
-#' #     # variable mapping
-#' #     var_class = "class",
-#' #     var_sae_n = "sae_n", #sae ID
-#' #     var_part_id = "record_id", #participant ID
-#' #     var_age = "age",
-#' #     var_sex ="sex",
-#' #     var_country = "country",
-#' #     var_site = "site",
-#' #     var_sae = "sae",
-#' #     var_date_onset = "sae_date",
-#' #     var_trt = "trt",
-#' #     var_date_trt_start = "sae_trtstart",
-#' #     var_date_trt_stop = "sae_trtstop",
-#' #     var_outcome = "outcome",
-#' #     var_comment = "comment",
-#' #     var_relation = "related",
-#' #     var_expected = "expected",
-#' #     var_safetymeasure = "safetymeasure"
-#' #     )
-#'
-#'
-#'
 
 asr <- function(data,
                 target = "tmp.docx",
@@ -374,36 +322,6 @@ asr <- function(data,
   # report itself ----
   doc <- read_docx(template)
 
-
-
-  # ..general info, details of trial ----
-  #
-  # for(i in c("trial_title",
-  #            "protocol_number",
-  #            "basec_number",
-  #            "snctp_number",
-  #            "swissmedic_number",
-  #            "ec_name",
-  #            "tr_number",
-  #            "product_name",
-  #            "sponsor_contact",
-  #            "inst_name_address",
-  #            "report_date",
-  #            "period",
-  #            "n_centers_t",
-  #            "n_centers_p",
-  #            "n_centers_c",
-  #            "n_centers_o",
-  #            "n_pat_t",
-  #            "n_pat_e",
-  #            "n_pat_c",
-  #            "n_pat_p")){
-  #   x <- get(i)
-  #   doc <- doc %>%
-  #     cursor_bookmark(i) %>%
-  #     body_add_par(x, pos = "after")
-  # }
-
   # format the dates for the text
   period_from_f <- format(period_from, format = "%d/%m/%Y")
   period_to_f <- format(period_to, format = "%d/%m/%Y")
@@ -411,26 +329,26 @@ asr <- function(data,
   period <- glue("{period_from_f} to {period_to_f}")
 ## New code to insert the fields instead of bookmarks
     doc <- doc %>%
-      set_doc_properties(trial_title = get("trial_title"),
-                                  protocol_number = get("protocol_number"),
-                                  basec_number = get("basec_number"),
-                                  snctp_number = get("snctp_number"),
-                                  swissmedic_number = get("swissmedic_number"),
-                                  ec_name = get("ec_name"),
-                                  tr_number = get("tr_number"),
-                                  product_name = get("product_name"),
-                                  sponsor_contact = get("sponsor_contact"),
-                                  inst_name_address = get("inst_name_address"),
-                                  report_date = get("report_date"),
-                                  period = get("period"),
-                                  n_centers_t = as.character(get("n_centers_t")),
-                                  n_centers_p = as.character(get("n_centers_p")),
-                                  n_centers_c = as.character(get("n_centers_c")),
-                                  n_centers_o = as.character(get("n_centers_o")),
-                                  n_centers_t_ch = as.character(get("n_centers_t_ch")),
-                                  n_centers_p_ch = as.character(get("n_centers_p_ch")),
-                                  n_centers_c_ch = as.character(get("n_centers_c_ch")),
-                                  n_centers_o_ch = as.character(get("n_centers_o_ch")),
+      set_doc_properties(trial_title = "trial_title",
+                                  protocol_number = "protocol_number",
+                                  basec_number = "basec_number",
+                                  snctp_number = "snctp_number",
+                                  swissmedic_number = "swissmedic_number",
+                                  ec_name = "ec_name",
+                                  tr_number = "tr_number",
+                                  product_name = "product_name",
+                                  sponsor_contact = "sponsor_contact",
+                                  inst_name_address = "inst_name_address",
+                                  report_date = "report_date",
+                                  period = "period",
+                                  n_centers_t = as.character("n_centers_t"),
+                                  n_centers_p = as.character("n_centers_p"),
+                                  n_centers_c = as.character("n_centers_c"),
+                                  n_centers_o = as.character("n_centers_o"),
+                                  n_centers_t_ch = as.character("n_centers_t_ch"),
+                                  n_centers_p_ch = as.character("n_centers_p_ch"),
+                                  n_centers_c_ch = as.character("n_centers_c_ch"),
+                                  n_centers_o_ch = as.character("n_centers_o_ch"),
                                   n_pat_t = as.character(n_pat_t),
                                   n_pat_e = as.character(n_pat_e),
                                   n_pat_c = as.character(n_pat_c),
@@ -447,13 +365,6 @@ asr <- function(data,
                              trial_type = trial_type,
                              n_pat_e = n_pat_e,
                              n_per_arm = n_per_arm)
-
-  # doc <- doc %>%
-  #   cursor_bookmark("partsafety_text")
-  # for(i in 1:length(summ$txt)){
-  #   txt <- summ$txt[i]
-  #   doc <- doc %>% body_add_par(txt, style = "Text")
-  # }
 
   doc <- doc %>%
     officer::set_doc_properties(partsafety_text = paste0(summ$txt, collapse = " ") )
@@ -519,7 +430,7 @@ asr <- function(data,
   }
   llist_ft <- flextable(llist) %>%
     #add_header_lines("Line listing of SAEs, SADRs and SUSARs, including international cases
-#(code and version of used standard (e.g. MedDRA or CTCAE) should be indicated, details on SUSARs will be attached as appendices)") %>%
+    #(code and version of used standard (e.g. MedDRA or CTCAE) should be indicated, details on SUSARs will be attached as appendices)") %>%
     border(border = fp_border(color = "#4FB4E0"), part="all") %>%
     fontsize(size = 8, part = "all") %>%
     font(fontname = "Helvetica", part = "all")
@@ -538,10 +449,3 @@ asr <- function(data,
   docx_update(input = target)
 
 }
-
-
-
-
-
-
-
