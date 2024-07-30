@@ -183,6 +183,8 @@ asr_dataprep <- function(data
   names(data)[names(data) == var_trt] <- "trt"
   if(tx_var){
     names(data)[names(data) == var_tx] <- "intervention"
+  }else{
+    data <- data[,!names(data) %in% "intervention"]
   }
 
   ## relevant variables exist

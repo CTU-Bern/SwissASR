@@ -51,10 +51,15 @@ asr_safety_summary <- function(data, period_data, trial_type, n_pat_e, n_per_arm
 
   trial_type <- match.arg(trial_type, c("imp", "medical device", "other","trp"))
 
-  ## display unique values in the trt variable
-  check <- unique(data$trt)
-  if(!all(check %in% names(n_per_arm))) warning("The treatment groups are not present in the treatment variable in the data set.")
+  ## check whether the intervention variable has been defined
+  if("intervention" %in% names(data)){
+    check <- unique(data$intervention)
 
+    ## Check whether the treatment are defined correctly in the trt variable
+    if(all(!is.na(n_per_arm)))
+      if(!all(check %in% names(n_per_arm))) stop("The treatment groups in the data do not match those in 'n_par_arm'. \n",
+                                                 "Please define the names of the treatment groups in the 'var_tx' variable or set 'n_par_arm' to NA.")
+  }
   if(trial_type == "imp"){
     # FOR IMP TRIALS
 
@@ -85,8 +90,7 @@ asr_safety_summary <- function(data, period_data, trial_type, n_pat_e, n_per_arm
                'Suspected Unexpected Serious Adverse Reactions, SUSARs (only for IMPs)'),
       stringsAsFactors = FALSE)
 
-    if(all(!is.na(n_per_arm)))
-      if(!all(check %in% names(n_per_arm))){
+    if("intervention" %in% names(data)){
       ### define the values for the two interventional groups
       grp <- names(n_per_arm)
 
@@ -186,7 +190,7 @@ asr_safety_summary <- function(data, period_data, trial_type, n_pat_e, n_per_arm
                'Safety and protective measures taken in Switzerland and abroad.'),
       stringsAsFactors = FALSE)
 
-    if(all(!is.na(n_per_arm))){
+    if("intervention" %in% names(data)){
 
     ### define the values for the two interventional groups
     grp <- names(n_per_arm)
@@ -255,7 +259,7 @@ asr_safety_summary <- function(data, period_data, trial_type, n_pat_e, n_per_arm
                'Other SAEs where a causality to the intervention cannot be excluded'),
       stringsAsFactors = FALSE)
 
-    if(all(!is.na(n_per_arm))){
+    if("intervention" %in% names(data)){
 
       ### define the values for the two interventional groups
       grp <- names(n_per_arm)
@@ -328,7 +332,7 @@ asr_safety_summary <- function(data, period_data, trial_type, n_pat_e, n_per_arm
                'Serious Adverse Drug Reactions, SADRs', 'Suspected Unexpected Serious Adverse Reactions, SUSARs'),
       stringsAsFactors = FALSE)
 
-    if(all(!is.na(n_per_arm))){
+    if("intervention" %in% names(data)){
 
     grp <- names(n_per_arm)
 
