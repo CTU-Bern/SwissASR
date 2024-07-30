@@ -21,6 +21,7 @@ A data frame with the following variables:
 \item{class}{SAE classification (SUSAR, SADR, ...)}
 \item{expected}{Was the SAE expected}
 \item{devdef}{(For device trials) was the SAE a device deficiency?}
+\item{devdefcouldlead}{(For device trials) whether the device deficiency could have lead to an SAE}
 \item{devattr}{(For device trials) was the SAE attributable to the device?}
 \item{devint}{(For device trials) was the SAE attributable to the intervention?}
 \item{safetymeasure}{(For device trials) was the SAE a health hazards that required safety-related measures?}

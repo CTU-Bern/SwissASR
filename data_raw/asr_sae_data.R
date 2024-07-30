@@ -25,6 +25,7 @@ sae_data <- data.frame(sae_date = last_report + msample(-20:20),
     class = msample(c("SAE", "SUSAR", "SADR")),
     expected = msample(c(TRUE, FALSE)),
     devdef = msample(c(TRUE, FALSE)),
+    devdefcouldlead = msample(c(TRUE, FALSE)),
     devattr = msample(c(TRUE, FALSE)),
     devint = msample(c(TRUE, FALSE)),
     safetymeasure = msample(c(TRUE, FALSE))
