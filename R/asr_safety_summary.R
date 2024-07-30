@@ -53,6 +53,7 @@ asr_safety_summary <- function(data, period_data, trial_type, n_pat_e, n_per_arm
 
   ## display unique values in the trt variable
   check <- unique(data$trt)
+  if(!all(check %in% names(n_per_arm))) warning("The treatment groups are not present in the treatment variable in the data set.")
 
   if(trial_type == "imp"){
     # FOR IMP TRIALS
@@ -84,7 +85,7 @@ asr_safety_summary <- function(data, period_data, trial_type, n_pat_e, n_per_arm
                'Suspected Unexpected Serious Adverse Reactions, SUSARs (only for IMPs)'),
       stringsAsFactors = FALSE)
 
-    if(all(!is.na(n_per_arm))){
+    if(all(!is.na(n_per_arm)))
       if(!all(check %in% names(n_per_arm))){
       ### define the values for the two interventional groups
       grp <- names(n_per_arm)
@@ -121,7 +122,7 @@ asr_safety_summary <- function(data, period_data, trial_type, n_pat_e, n_per_arm
                " (",sum(data$class == "SUSAR" & data$intervention==grp[1], na.rm=TRUE),",",
                sum(data$class == "SUSAR" & data$intervention==grp[2], na.rm=TRUE),")"),
       )
-    }} else {
+    } else {
 
       tab <- tribble(
         ~desc, ~fatal, ~sae, ~sadr, ~susar,
