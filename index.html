@@ -39,6 +39,7 @@
 <li class="nav-item"><form class="form-inline" role="search">
  <input class="form-control" type="search" name="search-input" id="search-input" autocomplete="off" aria-label="Search site" placeholder="Search for" data-search-index="search.json">
 </form></li>
+<li class="nav-item"><a class="external-link nav-link" href="https://github.com/CTU-Bern/SwissASR/" aria-label="GitHub"><span class="fa fab fa-github fa-lg"></span></a></li>
       </ul>
 </div>
 
@@ -70,7 +71,7 @@
 </h3>
 <p>Load it as usual:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">SwissASR</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/CTU-Bern/SwissASR" class="external-link">SwissASR</a></span><span class="op">)</span></span></code></pre></div>
 <p>The main function is called <code>asr</code>. It has a lot of options, but these are mostly for generalizability. If your dataframe matches the default variable names, then there is no need to use most options.</p>
 <p>Assuming your dataframe is called <code>sae_data</code>, then the function could be used as follows for the IMP. This will create a file called <code>tmp.docx</code> in your working directory (the filename is controllable via the <code>target</code> option).</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
@@ -103,7 +104,14 @@
 </div>
 </div>
 </div>
-  </main><aside class="col-md-3"><div class="license">
+  </main><aside class="col-md-3"><div class="links">
+<h2 data-toc-skip>Links</h2>
+<ul class="list-unstyled">
+<li><a href="https://github.com/CTU-Bern/SwissASR/" class="external-link">Browse source code</a></li>
+</ul>
+</div>
+
+<div class="license">
 <h2 data-toc-skip>License</h2>
 <ul class="list-unstyled">
 <li><a href="LICENSE.html">Full license</a></li>
