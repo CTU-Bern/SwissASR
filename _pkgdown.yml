@@ -1,3 +1,7 @@
+url: https://ctu-bern.github.io/SwissASR/
+template:
+  bootstrap: 5
+  light-switch: true
 navbar:
   structure:
     left: [reference, news]
