@@ -14,6 +14,7 @@ Authors@R:
            comment = c(ORCID = "0000-0002-8063-7882")) )
 Description: Completing the SwissEthics Annual Safety Report can be tiresome. This package eases the pain by providing an automated method to fill it out.
 License: MIT + file LICENSE
+URL: https://github.com/CTU-Bern/SwissASR, https://ctu-bern.github.io/SwissASR/
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
