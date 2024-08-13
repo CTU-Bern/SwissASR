@@ -4,3 +4,4 @@
 ^.github
 Readme.Rmd
 data_raw
+pkgdown/
