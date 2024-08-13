@@ -1,14 +1,14 @@
 <urlset xmlns = 'http://www.sitemaps.org/schemas/sitemap/0.9'>
-<url><loc>/404.html</loc></url>
-<url><loc>/LICENSE-text.html</loc></url>
-<url><loc>/LICENSE.html</loc></url>
-<url><loc>/authors.html</loc></url>
-<url><loc>/index.html</loc></url>
-<url><loc>/news/index.html</loc></url>
-<url><loc>/reference/asr.html</loc></url>
-<url><loc>/reference/asr_dataprep.html</loc></url>
-<url><loc>/reference/asr_sae.html</loc></url>
-<url><loc>/reference/asr_safety_summary.html</loc></url>
-<url><loc>/reference/index.html</loc></url>
+<url><loc>https://ctu-bern.github.io/SwissASR/404.html</loc></url>
+<url><loc>https://ctu-bern.github.io/SwissASR/LICENSE-text.html</loc></url>
+<url><loc>https://ctu-bern.github.io/SwissASR/LICENSE.html</loc></url>
+<url><loc>https://ctu-bern.github.io/SwissASR/authors.html</loc></url>
+<url><loc>https://ctu-bern.github.io/SwissASR/index.html</loc></url>
+<url><loc>https://ctu-bern.github.io/SwissASR/news/index.html</loc></url>
+<url><loc>https://ctu-bern.github.io/SwissASR/reference/asr.html</loc></url>
+<url><loc>https://ctu-bern.github.io/SwissASR/reference/asr_dataprep.html</loc></url>
+<url><loc>https://ctu-bern.github.io/SwissASR/reference/asr_sae.html</loc></url>
+<url><loc>https://ctu-bern.github.io/SwissASR/reference/asr_safety_summary.html</loc></url>
+<url><loc>https://ctu-bern.github.io/SwissASR/reference/index.html</loc></url>
 </urlset>
 
