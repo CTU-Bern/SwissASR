@@ -1,3 +1,7 @@
+# SwissASR 0.5.3
+
+* better handling of dates in metadata
+
 # SwissASR 0.5.2
 
 * Correction of template inputs, dates formatting and additional note for SAEs tables. 
