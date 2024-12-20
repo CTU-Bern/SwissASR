@@ -27,6 +27,7 @@ asr_dataprep(
   var_relation = "related",
   var_expected = "expected",
   var_devdef = "devdef",
+  var_devdefcouldlead = "devdefcouldlead",
   var_devattr = "devattr",
   var_devint = "devint",
   var_safetymeasure = "safetymeasure",
@@ -77,6 +78,8 @@ asr_dataprep(
 \item{var_expected}{variable saying whether the SAE was expected}
 
 \item{var_devdef}{variable containing whether the SAE is a device deficiency}
+
+\item{var_devdefcouldlead}{variable containing whether the device deficiency could have lead to an SAE}
 
 \item{var_devattr}{variable containing whether the SAE is attributable to the device}
 
