@@ -1,5 +1,6 @@
 # SwissASR 0.5.3
 
+* Last updates to align with the latest template and add a warning for special characters causing a problem in producing the Word report from R. 
 * better handling of dates in metadata
 
 # SwissASR 0.5.2
